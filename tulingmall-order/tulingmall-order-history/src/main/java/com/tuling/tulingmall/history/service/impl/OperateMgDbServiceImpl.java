@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class OperateMgDbServiceImpl implements OperateMgDbService {
     private MongoTemplate mongoTemplate;
 
     @Override
+    @Transactional
     public void saveToMgDb(List<OmsOrderDetail> orders, long curMaxOrderId,String tableName) {
         log.info("准备将表{}数据迁移入MongoDB，参数curMaxOrderId = {}",tableName,curMaxOrderId);
         mongoTemplate.insert(orders,OmsOrderDetail.class);
