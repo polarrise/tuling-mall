@@ -9,10 +9,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
-/**
- * @author ：楼兰
- * @description: 分布式事务配置
- **/
 @Configuration
 @EnableTransactionManagement
 public class TransactionConfig {

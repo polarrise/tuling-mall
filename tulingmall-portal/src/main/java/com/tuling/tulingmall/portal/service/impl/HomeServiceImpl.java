@@ -100,9 +100,8 @@ public class HomeServiceImpl implements HomeService {
             secKills = secKillCacheBak.getIfPresent(secKillKey);
         }
         if(CollectionUtils.isEmpty(secKills)){
-            /*极小的概率出现本地两个缓存同时失效的问题，
-            从远程获取时，只从Redis缓存中获取，不从营销微服务中获取，
-            避免秒杀的流量冲垮营销微服务*/
+            /*如果出现极小的概率本地两个缓存同时失效的问题，
+            从远程获取时，只从Redis缓存中获取*/
             secKills = getSecKillFromRemote();
             if(!CollectionUtils.isEmpty(secKills)) {
                 secKillCache.put(secKillKey,secKills);

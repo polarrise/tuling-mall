@@ -27,9 +27,8 @@ public class CaffeineCacheConfig {
                 .build();
     }
 
-    /*以双缓存的形式提升首页的访问性能，这个备份缓存其实设置为永不过期更好，
-    * 可以作为首页的降级和兜底方案
-    * 为了说明缓存击穿和分布式锁这里设置了一个过期时间*/
+    /*以双缓存的形式提升首页的访问性能，这个备份缓存其实运行过程中会永不过期
+    * 可以作为首页的降级和兜底方案 * */
     @Bean(name = "promotionBak")
     public Cache<String, HomeContentResult> promotionCacheBak() {
         int rnd = ThreadLocalRandom.current().nextInt(10);
@@ -49,7 +48,7 @@ public class CaffeineCacheConfig {
         int rnd = ThreadLocalRandom.current().nextInt(400);
         return Caffeine.newBuilder()
                 // 设置最后一次写入经过固定时间过期
-                .expireAfterWrite(500 + rnd, TimeUnit.MILLISECONDS)
+                .expireAfterWrite(5000 + rnd, TimeUnit.MILLISECONDS)
                 // 初始的缓存空间大小
                 .initialCapacity(20)
                 // 缓存的最大条数
@@ -63,7 +62,7 @@ public class CaffeineCacheConfig {
         int rnd = ThreadLocalRandom.current().nextInt(400);
         return Caffeine.newBuilder()
                 // 设置最后一次写入经过固定时间过期
-                .expireAfterWrite(100 + rnd, TimeUnit.MILLISECONDS)
+                .expireAfterWrite(1000 + rnd, TimeUnit.MILLISECONDS)
                 // 初始的缓存空间大小
                 .initialCapacity(20)
                 // 缓存的最大条数

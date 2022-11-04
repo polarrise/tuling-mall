@@ -38,7 +38,7 @@ public class OmsOrderItemShardingAlgorithm implements ComplexKeysShardingAlgorit
                 if (Objects.nonNull(orderSns)) ids.addAll(ids2String(orderSns));
 
                 return ids.stream()
-                         /*截取 订单号或客户id的后2位*/
+                         /*截取 order_id的后2位*/
                         .map(id -> id.substring(id.length() - 2))
                         /* 去重*/
                         .distinct()

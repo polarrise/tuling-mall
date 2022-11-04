@@ -162,7 +162,7 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
             log.debug("前端页面传递orderId[{}]",orderId);
         }
         /*这里我们对OrderSn简单处理，在实际业务时可以根据情况做变化，比如添加前缀或可逆加密，
-        只要保证可以从OrderSn中解析出orderId即可*/
+        只要保证可以从OrderSn中解析出orderId即可，方便根据OrderSn进行查询*/
         String orderSn = orderId.toString();
 
         List<OmsOrderItem> orderItemList = new ArrayList<>();
@@ -285,7 +285,7 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
      * 订单详情
      * @param orderId
      */
-    public CommonResult getDetailOrder(Long orderId){
+    public CommonResult getDetailOrder(Long orderId) {
         return CommonResult.success(portalOrderDao.getDetail(orderId));
     }
 

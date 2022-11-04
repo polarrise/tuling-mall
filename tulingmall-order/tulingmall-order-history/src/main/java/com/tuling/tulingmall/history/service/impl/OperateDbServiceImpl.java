@@ -6,6 +6,7 @@ import com.tuling.tulingmall.history.service.OperateDbService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -28,6 +29,7 @@ public class OperateDbServiceImpl implements OperateDbService {
     }
 
     @Override
+    @Transactional("dbTransactionManager")
     public void deleteOrders(int tableCount,long minOrderId,long maxOrderId) {
         String omsOrderTableName = OrderConstant.OMS_ORDER_NAME_PREFIX + tableCount;
         String omsOrderItemTableName = OrderConstant.OMS_ORDER_ITEM_NAME_PREFIX + tableCount;

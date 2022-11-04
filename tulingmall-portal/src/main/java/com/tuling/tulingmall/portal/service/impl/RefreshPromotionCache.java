@@ -58,10 +58,8 @@ public class RefreshPromotionCache {
                         promotionCache.put(brandKey,result);
                         log.info("刷新本地缓存[promotionCache] 成功");
                     }
-                    if(null == promotionCacheBak.getIfPresent(brandKey)) {
-                        promotionCacheBak.put(brandKey,result);
-                        log.info("刷新本地缓存[promotionCache] 成功");
-                    }
+                    promotionCacheBak.put(brandKey,result);
+                    log.info("刷新本地缓存[promotionCacheBak] 成功");
                 }else{
                     log.warn("从远程获得[promotionCache] 数据失败");
                 }
@@ -70,7 +68,7 @@ public class RefreshPromotionCache {
     }
 
     @Async
-    @Scheduled(initialDelay=30,fixedDelay = 30)
+    @Scheduled(initialDelay=300,fixedDelay = 300)
     public void refreshSecKillCache(){
         final String secKillKey = promotionRedisKey.getSecKillKey();
         if(null == secKillCache.getIfPresent(secKillKey)||null == secKillCacheBak.getIfPresent(secKillKey)){
