@@ -104,6 +104,7 @@ public class PromotionData implements IProcessCanalData {
                         factKeys.add(tableMapKey.get(tableName));
                     }
                     for(String key : factKeys){
+                        /*此处未做删除缓存失败的补偿操作，可以自行加入*/
                         if(StringUtils.isNotEmpty(key))  redisOpsExtUtil.delete(key);
                     }
                     connector.ack(batchId); // 提交确认

@@ -52,6 +52,12 @@ public class OrderMessageSender {
         return SendStatus.SEND_OK == result.getSendStatus();
     }
 
+    /**发送压测RockctMQ消息*/
+    public boolean sendPressureMQMsg(OrderMessage message){
+        SendResult result = rocketMQTemplate.syncSend("PressureMQ",message);
+        return SendStatus.SEND_OK == result.getSendStatus();
+    }
+
 //    /**
 //     * 发送延时同步库存消息，60s后同步库存
 //     * @param productId

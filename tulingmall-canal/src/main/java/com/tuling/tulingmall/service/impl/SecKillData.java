@@ -24,7 +24,7 @@ import javax.annotation.PreDestroy;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-@Service
+//@Service
 @Slf4j
 public class SecKillData implements IProcessCanalData {
 

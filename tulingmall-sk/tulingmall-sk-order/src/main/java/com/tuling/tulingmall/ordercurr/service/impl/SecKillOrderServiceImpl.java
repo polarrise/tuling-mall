@@ -51,6 +51,138 @@ public class SecKillOrderServiceImpl implements SecKillOrderService {
     private OrderMessageSender orderMessageSender;
     @Autowired
     private PromotionFeignApi promotionFeignApi;
+    @Autowired
+    private RedisStockOper redisStockOper;
+
+    private static Executor sendMessage = new ThreadPoolExecutor(2,4,
+            60,TimeUnit.SECONDS,new ArrayBlockingQueue<>(50000));
+
+    public static class MessageTask implements Runnable{
+
+        private Long orderId;
+        private Long orderItemId;
+        private FlashPromotionProduct product;
+        private Long memberId;
+        private SecKillOrderParam secKillOrderParam;
+        private OrderMessageSender orderMessageSender;
+        private RedisSingleUtil redisStockUtil;
+        private  Executor sendMessage;
+
+        public MessageTask(Long orderId, Long orderItemId, FlashPromotionProduct product,
+                           Long memberId, SecKillOrderParam secKillOrderParam,
+                           OrderMessageSender orderMessageSender, RedisSingleUtil redisStockUtil,
+                           Executor sendMessage) {
+            this.orderId = orderId;
+            this.orderItemId = orderItemId;
+            this.product = product;
+            this.memberId = memberId;
+            this.secKillOrderParam = secKillOrderParam;
+            this.orderMessageSender = orderMessageSender;
+            this.redisStockUtil = redisStockUtil;
+            this.sendMessage = sendMessage;
+        }
+
+        @Override
+        public void run() {
+            //准备创建订单
+            //生成下单商品信息
+            String orderSn = orderId.toString();
+            OmsOrderItem orderItem = new OmsOrderItem();
+            orderItem.setId(orderItemId);
+            orderItem.setProductId(product.getId());
+            orderItem.setProductName(product.getName());
+            orderItem.setProductPic(product.getPic());
+            orderItem.setProductBrand(product.getBrandName());
+            orderItem.setProductSn(product.getProductSn());
+            orderItem.setProductPrice(product.getFlashPromotionPrice());
+            orderItem.setProductQuantity(1);
+            orderItem.setProductCategoryId(product.getProductCategoryId());
+            orderItem.setPromotionAmount(product.getPrice().subtract(product.getFlashPromotionPrice()));
+            orderItem.setPromotionName("秒杀特惠活动");
+            orderItem.setGiftIntegration(product.getGiftPoint());
+            orderItem.setGiftGrowth(product.getGiftGrowth());
+            orderItem.setCouponAmount(new BigDecimal(0));
+            orderItem.setIntegrationAmount(new BigDecimal(0));
+            orderItem.setPromotionAmount(new BigDecimal(0));
+            //支付金额
+            BigDecimal payAmount = product.getFlashPromotionPrice().multiply(new BigDecimal(1));
+            //优惠价格
+            orderItem.setRealAmount(payAmount);
+            orderItem.setOrderSn(orderSn);
+
+            OmsOrder order = new OmsOrder();
+            order.setId(orderId);
+            order.setDiscountAmount(product.getPrice().subtract(product.getFlashPromotionPrice()));//折扣金额
+            order.setFreightAmount(new BigDecimal(0));//运费金额
+            order.setPromotionAmount(new BigDecimal(0));
+            order.setPromotionInfo("秒杀特惠活动");
+            order.setTotalAmount(payAmount);
+            order.setIntegration(0);
+            order.setIntegrationAmount(new BigDecimal(0));
+            order.setPayAmount(payAmount);
+            order.setMemberId(memberId);
+            order.setMemberUsername(null);
+            order.setCreateTime(new Date());
+            //设置支付方式：0->未支付,1->支付宝,2->微信
+            order.setPayType(secKillOrderParam.getPayType());
+            //设置支付方式：0->PC订单,1->APP订单,2->小程序
+            order.setSourceType(0);
+            //订单状态：0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单
+            order.setStatus(OrderConstant.ORDER_STATUS_UNPAY);
+            //订单类型：0->正常订单；1->秒杀订单
+            order.setOrderType(OrderConstant.ORDER_TYPE_SECKILL);
+            //用户收货信息
+            UmsMemberReceiveAddress address = secKillOrderParam.getMemberReceiveAddress();
+            order.setReceiverName(address.getName());
+            order.setReceiverPhone(address.getPhoneNumber());
+            order.setReceiverPostCode(address.getPostCode());
+            order.setReceiverProvince(address.getProvince());
+            order.setReceiverCity(address.getCity());
+            order.setReceiverRegion(address.getRegion());
+            order.setReceiverDetailAddress(address.getDetailAddress());
+            //0->未确认；1->已确认
+            order.setConfirmStatus(OrderConstant.CONFIRM_STATUS_NO);
+            order.setDeleteStatus(OrderConstant.DELETE_STATUS_NO);
+            //计算赠送积分
+            order.setIntegration(product.getGiftPoint());
+            //计算赠送成长值
+            order.setGrowth(product.getGiftGrowth());
+            //生成订单号-理论上唯一
+            order.setOrderSn(orderSn);
+
+            /*******************************异步下单******************************************/
+            OrderMessage orderMessage = new OrderMessage();
+            orderMessage.setOrder(order);
+            orderMessage.setOrderItem(orderItem);
+            orderMessage.setFlashPromotionRelationId(product.getRelationId());
+            orderMessage.setFlashPromotionLimit(product.getFlashPromotionLimit());
+            orderMessage.setFlashPromotionEndDate(product.getFlashPromotionEndDate());
+            Map<String,Object> result = new HashMap<>();
+            List<OmsOrderItem> itemList = new ArrayList<>();
+            itemList.add(orderItem);
+            result.put("order",order);
+            result.put("orderItemList",itemList);
+            try {
+                boolean sendStatus = orderMessageSender.sendCreateOrderMsg(orderMessage);
+                if(sendStatus){
+                    /*打上排队的标记*/
+                    redisStockUtil.set(RedisKeyPrefixConst.MIAOSHA_ASYNC_WAITING_PREFIX + memberId + ":"
+                                    + secKillOrderParam.getProductId()
+                            ,Integer.toString(1),60, TimeUnit.SECONDS);
+                    result.put("orderStatus",OrderConstant.ORDER_SECKILL_ORDER_TYPE_ASYN);
+                }else{
+                    log.warn("用户[{}]订单[{}]发送不成功，重新入队尝试再次发送",memberId,orderSn);
+                    sendMessage.execute(this);
+                    /*failSendMessage(productId,result);
+                    return CommonResult.failed(result,"下单失败，请稍后再试");*/
+                }
+            } catch (Exception e) {
+                log.error("消息入队或发送MQ失败:",e);
+                /*failSendMessage(productId,result);
+                return CommonResult.failed(result,"下单失败，请稍后再试");*/
+            }
+        }
+    }
 
     @Autowired
     private Cache<String, FlashPromotionProduct> localCache;
@@ -95,10 +227,9 @@ public class SecKillOrderServiceImpl implements SecKillOrderService {
             return CommonResult.failed("秒杀活动未开始或已结束！");
         }
 
-
         /*在缓存中扣减库存，应对秒杀高并发*/
-        if(!preDecrRedisStock(productId)){
-            return CommonResult.failed("已经抢购完了，感谢参与本次活动");
+        if(!redisStockOper.preDecrRedisStock(productId,Long.valueOf(1))){
+            return CommonResult.failed("秒杀商品已经抢购完了，感谢参与本次活动");
         }
         /*在本地持久化扣减记录*/
         String cfName = OrderConstant.RD_CFNAME_PREFIX + secKillOrderParam.getFlashPromotionId();
@@ -108,10 +239,21 @@ public class SecKillOrderServiceImpl implements SecKillOrderService {
             RocksDBUtil.put(cfName,key,value);
         } catch (RocksDBException e) {
             log.error("本地持久化异常： ",e);
-            return CommonResult.failed("已经抢购完了，感谢参与本次活动");
+            return CommonResult.failed("已经抢购完了，感谢参与");
         }
 
-        //准备创建订单
+        try {
+            sendMessage.execute(new MessageTask(orderId,orderItemId,product,memberId,
+                    secKillOrderParam,orderMessageSender,redisStockUtil,sendMessage));
+        } catch (Exception e) {
+            return CommonResult.failed("已经抢购完了，感谢参与本次活动");
+        }
+        Map<String,Object> result = new HashMap<>();
+        result.put("order",orderId);
+        result.put("orderItem",orderItemId);
+        return CommonResult.success(result,"下单中.....，后续请检查下单是否成功");
+
+/*        //准备创建订单
         //生成下单商品信息
         String orderSn = orderId.toString();
         OmsOrderItem orderItem = new OmsOrderItem();
@@ -177,7 +319,7 @@ public class SecKillOrderServiceImpl implements SecKillOrderService {
         //生成订单号-理论上唯一
         order.setOrderSn(orderSn);
 
-        /*******************************异步下单******************************************/
+        *//*******************************异步下单******************************************//*
         OrderMessage orderMessage = new OrderMessage();
         orderMessage.setOrder(order);
         orderMessage.setOrderItem(orderItem);
@@ -192,7 +334,7 @@ public class SecKillOrderServiceImpl implements SecKillOrderService {
         try {
             boolean sendStatus = orderMessageSender.sendCreateOrderMsg(orderMessage);
             if(sendStatus){
-                /*打上排队的标记*/
+                *//*打上排队的标记*//*
                 redisStockUtil.set(RedisKeyPrefixConst.MIAOSHA_ASYNC_WAITING_PREFIX + memberId + ":" + productId
                         ,Integer.toString(1),60, TimeUnit.SECONDS);
                 result.put("orderStatus",OrderConstant.ORDER_SECKILL_ORDER_TYPE_ASYN);
@@ -204,8 +346,8 @@ public class SecKillOrderServiceImpl implements SecKillOrderService {
             log.error("消息发送失败:error msg:{}",e.getMessage(),e.getCause());
             failSendMessage(productId,result);
             return CommonResult.failed(result,"下单失败，请稍后再试");
-        }
-        return CommonResult.success(result,"下单中.....，后续请检查下单是否成功");
+        }*/
+
     }
 
     /*往MQ发送"创建订单"消息失败时的处理*/
@@ -261,17 +403,17 @@ public class SecKillOrderServiceImpl implements SecKillOrderService {
             会导致增加的库存数量比实际的少，产生这个问题的主要原因是在扣减时未检查库存的数量，
             但是检查库存的数量，又容易导致库存超卖，库存超卖的问题主要是由两个原因引起的，
             一个是查询和扣减不是原子操作，另一个是并发引起的请求无序，
-            所以解决这个问题可以采用执行Lua脚本的方法进行库存扣减：
+            所以解决这个问题可以采用执行Lua脚本的方法进行库存扣减，取消掉这个incrRedisStock操作：
             PO: Lua脚本参考如下，以一行注释一行代码形式呈现：
             -- -------------------Lua脚本代码开始***************************
             -- 调用Redis的get指令，查询活动库存，其中KEYS[1]为传入的参数1，即库存key
             local c_s = redis.call('get', KEYS[1])
-            -- 判断活动库存是否充足，其中KEYS[2]为传入的参数2，即当前抢购数量
-            if not c_s or tonumber(c_s) < tonumber(KEYS[2]) then
+            -- 判断活动库存是否充足，其中ARGV[1]为传入当前抢购数量
+            if not c_s or tonumber(c_s) < tonumber(ARGV[1]) then
                return 0
             end
-            -- 如果活动库存充足，则进行扣减操作。其中KEYS[2]为传入的参数2，即当前抢购数量
-            redis.call('decrby',KEYS[1], KEYS[2])
+            -- 如果活动库存充足，则进行扣减操作。其中ARGV[1]为传入当前抢购数量
+            redis.call('decrby',KEYS[1], ARGV[1])
             -- -------------------Lua脚本代码结束***********************
             当然还可以将上面的脚本进行脚本预加载，预加载机制之一可以参考tulingmall-promotion中分布式锁的实现
             */

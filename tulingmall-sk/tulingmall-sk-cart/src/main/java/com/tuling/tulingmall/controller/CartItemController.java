@@ -65,6 +65,7 @@ public class CartItemController {
                 .style(CaptchaStyle.ANIM) //动画 or 图片
                 .type(CaptchaType.ARITHMETIC_ZH) // 中文简体加、减、乘、除
                 .build().finish();
+
     }
 
     @ApiOperation("检查验证码")

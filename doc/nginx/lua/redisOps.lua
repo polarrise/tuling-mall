@@ -1,8 +1,5 @@
 -- 导入redis的Lua模块
 local redis = require('resty.redis')
--- 初始化redis
-local red = redis:new()
-red:set_timeouts(1000, 1000, 1000)
 
 -- 关闭redis连接的工具方法，其实是放入连接池
 local function close_redis(red)
@@ -16,6 +13,9 @@ end
 
 -- 查询redis的方法 ip和port是redis地址，key是查询的key
 local function read_redis(ip, port, key)
+    -- 初始化redis
+    local red = redis:new()
+    red:set_timeouts(1000, 1000, 1000)
     -- 获取一个连接
     local ok, err = red:connect(ip, port)
     if not ok then

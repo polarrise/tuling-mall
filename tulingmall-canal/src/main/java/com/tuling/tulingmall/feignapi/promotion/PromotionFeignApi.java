@@ -13,7 +13,7 @@ import java.util.List;
 /**
 * @desc:
 */
-@FeignClient(name = "tulingmall-promotion",path = "/seckill")
+//@FeignClient(name = "tulingmall-promotion",path = "/seckill")
 public interface PromotionFeignApi {
 
     /*获得秒杀内容*/
