@@ -1,8 +1,5 @@
 package com.tuling.tulingmall.ordercurr.component.trade.alipay.model.hb;
 
-/**
- * Created by liuyangkly on 15/9/28.
- */
 public class PosTradeInfo implements TradeInfo {
     private HbStatus status;
     private String time;

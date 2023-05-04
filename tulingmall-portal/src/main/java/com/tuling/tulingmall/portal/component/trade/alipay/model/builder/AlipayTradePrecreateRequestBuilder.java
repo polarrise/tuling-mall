@@ -7,9 +7,6 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
 
-/**
- * Created by liuyangkly on 16/3/3.
- */
 public class AlipayTradePrecreateRequestBuilder extends RequestBuilder {
 
     private BizContent bizContent = new BizContent();

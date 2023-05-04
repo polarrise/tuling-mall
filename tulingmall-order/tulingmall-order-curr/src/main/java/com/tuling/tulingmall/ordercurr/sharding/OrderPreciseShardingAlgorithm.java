@@ -17,7 +17,6 @@ import java.util.Collection;
  *     ||        ||  \)     
  *     (_\       (_\
  * @author ：图灵学院
- * @date ：Created in 2020/4/27 9:49
  * @version: V1.0
  * @slogan: 天下风云出我辈，一入代码岁月催
  * @description: 精确分片算法，支持=,in查询，结合standardShardingStrategy标准分片策略使用

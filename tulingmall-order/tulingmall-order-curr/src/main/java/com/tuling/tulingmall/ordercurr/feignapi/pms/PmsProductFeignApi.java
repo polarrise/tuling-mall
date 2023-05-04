@@ -14,7 +14,6 @@ package com.tuling.tulingmall.ordercurr.feignapi.pms;//package com.tuling.tuling
 //* @vlog: 高于生活，源于生活
 //* @desc: 类的描述:调用商品服务接口
 //* @author: smlz
-//* @createDate: 2020/1/23 17:42
 //* @version: 1.0
 //*/
 //@FeignClient(name = "tulingmall-product")

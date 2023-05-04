@@ -17,7 +17,6 @@ import java.util.Collection;
  *     ||        ||  \)
  *     (_\       (_\
  * @author ：图灵学院
- * @date ：Created in 2020/4/27 9:48
  * @version: V1.0
  * @slogan: 天下风云出我辈，一入代码岁月催
  * @description: hint查询，无需再经过sql解析与路由阶段，直接查询目标库表

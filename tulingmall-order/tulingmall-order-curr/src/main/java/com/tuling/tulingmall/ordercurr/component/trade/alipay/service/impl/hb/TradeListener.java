@@ -1,8 +1,5 @@
 package com.tuling.tulingmall.ordercurr.component.trade.alipay.service.impl.hb;
 
-/**
- * Created by liuyangkly on 15/10/27.
- */
 public interface TradeListener {
 
     // 支付成功

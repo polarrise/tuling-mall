@@ -9,10 +9,6 @@ import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
-/**
- * Created by liuyangkly on 15/10/23.
- private List<BlockingQueue<E>> concurrentQueueList = Collections.synchronizedList(queueList);
- */
 public class HbQueue {
     private static Log log = LogFactory.getLog(HbQueue.class);
 

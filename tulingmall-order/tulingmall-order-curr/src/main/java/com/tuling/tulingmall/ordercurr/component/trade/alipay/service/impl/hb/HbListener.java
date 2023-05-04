@@ -5,9 +5,6 @@ import com.tuling.tulingmall.ordercurr.component.trade.alipay.model.hb.SysTradeI
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-/**
- * Created by liuyangkly on 15/10/28.
- */
 public class HbListener implements TradeListener {
     private static Log log = LogFactory.getLog(HbListener.class);
 

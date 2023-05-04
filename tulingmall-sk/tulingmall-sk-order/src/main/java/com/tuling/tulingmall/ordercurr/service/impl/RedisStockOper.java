@@ -62,7 +62,9 @@ public class RedisStockOper {
             log.error("预加载lua脚本异常：{}", luaName, e);
         }
     }
-
+//TODO 这一部分手敲 先分析两次读取Redis案例，先读库存再减库存 -- 缺点：性能低，并发超卖
+    // 1、分析分布式锁的缺点 setNX --  分析缺点，分布式锁不可靠，并发性能影响大
+    // 2、现在这个lua脚本实现方式
     public boolean preDecrRedisStock(Long productId,Long reduceCount) {
         Long stock = (Long)redisTemplate.execute(redisScript,
                 Collections.singletonList(RedisKeyPrefixConst.MIAOSHA_STOCK_CACHE_PREFIX + productId),reduceCount);
@@ -71,4 +73,5 @@ public class RedisStockOper {
         else
             return true;
     }
+
 }

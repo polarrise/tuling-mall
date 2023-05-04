@@ -1,0 +1,9 @@
+部署地址：192.168.65.28 /usr/local/openresty
+doc/htmljss   部署到   /usr/local/openresty/nginx/    css,js以及订单确认页，订单支付页。 不需要product.ftl。
+    product.ftl模板文件是用来生成秒杀商品的单品页的，在SecKillOrderController.generateOrder方法中用到。
+    生成的静态页面在/usr/local/openresty/tpl目录。
+doc/nginx/lua  部署到   /usr/local/openresty/nginx/lua 和 /usr/local/openresty/lua 这两个目录中。
+    nginx.conf中会配置从这两个目录加载lua脚本。
+    stock.lua和product.lua主要是用来在生成的秒杀商品单品页中渲染库存和产品。
+        nginx.conf中会对这两个lua脚本配置访问地址。
+    访问Redis还需要保留/usr/local/openresty/lualib下的插件包。

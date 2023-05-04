@@ -24,9 +24,6 @@ import com.tuling.tulingmall.ordercurr.component.trade.alipay.utils.Utils;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/**
- * Created by liuyangkly on 15/10/28.
- */
 abstract class AbsAlipayTradeService extends AbsAlipayService implements AlipayTradeService {
     protected static ExecutorService executorService = Executors.newCachedThreadPool();
     protected AlipayClient client;

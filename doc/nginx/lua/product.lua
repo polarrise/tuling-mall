@@ -1,5 +1,6 @@
 -- 导入lua-resty-template函数库
 local template = require('resty.template')
+-- 获取flashPromotionId参数  http://[url]?flashPromotionId=?
 local flashPromotionId = ngx.var.arg_flashPromotionId
 ngx.log(ngx.ERR, "秒杀活动ID: ", flashPromotionId)
 local promotionProductId = ngx.var.arg_promotionProductId

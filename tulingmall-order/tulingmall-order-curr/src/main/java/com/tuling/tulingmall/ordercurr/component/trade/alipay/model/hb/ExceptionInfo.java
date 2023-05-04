@@ -1,8 +1,5 @@
 package com.tuling.tulingmall.ordercurr.component.trade.alipay.model.hb;
 
-/**
- * Created by liuyangkly on 15/8/27.
- */
 public enum ExceptionInfo {
      HE_PRINTER // 打印机异常；
 

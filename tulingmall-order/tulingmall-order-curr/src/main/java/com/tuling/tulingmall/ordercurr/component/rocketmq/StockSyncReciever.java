@@ -24,7 +24,6 @@ package com.tuling.tulingmall.ordercurr.component.rocketmq;//package com.tuling.
 // *     ||        ||  \)
 // *     (_\       (_\
 // * @author ：图灵学院
-// * @date ：Created in 2020/3/9 14:21
 // * @version: V1.0
 // * @slogan: 天下风云出我辈，一入代码岁月催
 // * @description: 解决数据库和redis库存不一致的问题

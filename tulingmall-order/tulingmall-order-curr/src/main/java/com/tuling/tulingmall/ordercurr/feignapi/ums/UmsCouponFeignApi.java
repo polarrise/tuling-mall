@@ -12,7 +12,6 @@ package com.tuling.tulingmall.ordercurr.feignapi.ums;//package com.tuling.tuling
 //* @vlog: 高于生活，源于生活
 //* @desc: 类的描述:会员优惠卷服务
 //* @author: smlz
-//* @createDate: 2020/1/23 17:00
 //* @version: 1.0
 //*/
 //@FeignClient(name = "tulingmall-coupons",path = "/coupon")

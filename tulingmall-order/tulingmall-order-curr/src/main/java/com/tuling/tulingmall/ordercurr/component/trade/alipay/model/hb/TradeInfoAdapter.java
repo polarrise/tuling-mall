@@ -10,9 +10,6 @@ import org.apache.commons.lang.StringUtils;
 import java.lang.reflect.Type;
 import java.util.List;
 
-/**
- * Created by liuyangkly on 15/9/28.
- */
 public class TradeInfoAdapter implements JsonSerializer<List<TradeInfo>> {
     @Override
     public JsonElement serialize(List<TradeInfo> tradeInfoList, Type type, JsonSerializationContext jsonSerializationContext) {

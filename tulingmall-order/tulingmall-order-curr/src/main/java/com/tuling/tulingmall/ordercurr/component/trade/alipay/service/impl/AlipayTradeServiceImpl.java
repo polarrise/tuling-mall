@@ -13,10 +13,7 @@ import com.tuling.tulingmall.ordercurr.component.trade.alipay.model.result.Alipa
 import org.apache.commons.lang.StringUtils;
 
 /**
- * Created by liuyangkly on 15/7/29.
- *
  *  一定要在创建AlipayTradeService之前调用Configs.init("xxxxxx");设置参数
- *
  */
 public class AlipayTradeServiceImpl extends AbsAlipayTradeService {
 

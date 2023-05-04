@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName;
 import com.tuling.tulingmall.ordercurr.component.trade.alipay.utils.Utils;
 
 /**
- * Created by liuyangkly on 15/6/26.
  * 商品明细
  */
 public class GoodsDetail {

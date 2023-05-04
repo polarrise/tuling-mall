@@ -7,9 +7,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-/**
- * Created by liuyangkly on 15/6/27.
- */
 public class Configs {
     private static Log log = LogFactory.getLog(Configs.class);
     private static Configuration configs;

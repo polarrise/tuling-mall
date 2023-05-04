@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
  *     ||        ||  \)
  *     (_\       (_\
  * @author ：图灵学院
- * @date ：Created in 2020/1/12 21:59
  * @version: V1.0
  * @slogan: 天下风云出我辈，一入代码岁月催
  * @description: 支付宝二维码存储与访问路径设置

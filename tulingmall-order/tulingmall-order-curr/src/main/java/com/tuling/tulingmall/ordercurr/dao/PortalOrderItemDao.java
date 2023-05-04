@@ -8,7 +8,6 @@ import java.util.List;
 
 /**
  * 订单商品信息自定义Dao
- * Created by macro on 2018/9/3.
  */
 @Mapper
 public interface PortalOrderItemDao {

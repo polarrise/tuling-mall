@@ -1,8 +1,5 @@
 package com.tuling.tulingmall.portal.component.trade.alipay.config;
 
-/**
- * Created by liuyangkly on 15/7/29.
- */
 public class Constants {
 
     private Constants() {

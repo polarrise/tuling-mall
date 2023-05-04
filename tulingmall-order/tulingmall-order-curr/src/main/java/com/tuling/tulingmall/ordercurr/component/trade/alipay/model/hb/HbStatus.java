@@ -1,8 +1,5 @@
 package com.tuling.tulingmall.ordercurr.component.trade.alipay.model.hb;
 
-/**
- * Created by liuyangkly on 15/8/27.
- */
 public enum HbStatus {
      S // 交易成功（包括支付宝返回“处理中”）
 

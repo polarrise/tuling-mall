@@ -18,7 +18,6 @@ import java.util.Collection;
  * (_\       (_\
  *
  * @author ：图灵学院
- * @date ：Created in 2020/4/26
  * @version: V1.0
  * @slogan: 天下风云出我辈，一入代码岁月催
  * @description: 分表范围查询,支持between and < > <= >= in 查询

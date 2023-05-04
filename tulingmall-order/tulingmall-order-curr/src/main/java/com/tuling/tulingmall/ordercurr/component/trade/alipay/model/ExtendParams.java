@@ -3,7 +3,6 @@ package com.tuling.tulingmall.ordercurr.component.trade.alipay.model;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by liuyangkly on 15/6/26.
  * 扩展信息
  */
 public class ExtendParams {

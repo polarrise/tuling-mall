@@ -1,7 +1,6 @@
 package com.tuling.tulingmall.ordercurr.component.trade.alipay.config;
 
 /**
- * Created by liuyangkly on 15/7/29.
  */
 public class Constants {
 

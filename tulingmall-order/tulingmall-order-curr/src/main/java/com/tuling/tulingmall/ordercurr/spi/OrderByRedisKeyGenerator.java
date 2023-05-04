@@ -22,7 +22,6 @@ import java.util.concurrent.TimeUnit;
  *     ||        ||  \)
  *     (_\       (_\
  * @author ：图灵学院
- * @date ：Created in 2020/3/8 19:55
  * @version: V1.0
  * @slogan: 天下风云出我辈，一入代码岁月催
  * @description: 全局唯一主键生成器【分库分表专用】

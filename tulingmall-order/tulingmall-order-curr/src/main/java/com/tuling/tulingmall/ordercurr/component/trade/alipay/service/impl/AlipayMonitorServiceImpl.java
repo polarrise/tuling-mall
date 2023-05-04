@@ -9,9 +9,6 @@ import com.tuling.tulingmall.ordercurr.component.trade.alipay.model.builder.Alip
 import com.tuling.tulingmall.ordercurr.component.trade.alipay.service.AlipayMonitorService;
 import org.apache.commons.lang.StringUtils;
 
-/**
- * Created by liuyangkly on 15/10/22.
- */
 public class AlipayMonitorServiceImpl extends AbsAlipayService implements AlipayMonitorService {
     private AlipayClient client;
 

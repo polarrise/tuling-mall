@@ -2,9 +2,6 @@ package com.tuling.tulingmall.portal.component.trade.alipay.model.builder;
 
 import com.tuling.tulingmall.portal.component.trade.alipay.utils.GsonFactory;
 
-/**
- * Created by liuyangkly on 15/7/31.
- */
 public abstract class RequestBuilder {
     private String appAuthToken;
     private String notifyUrl;

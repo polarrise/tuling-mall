@@ -23,10 +23,7 @@ import java.net.SocketTimeoutException;
 
 
 /**
- * Created by liuyangkly on 15/7/29.
- *
  *  一定要在创建AlipayTradeService之前调用Configs.init("alipayrisk10");设置参数
- *
  */
 public class AlipayTradeWithHBServiceImpl extends AbsAlipayTradeService {
     private TradeListener listener;

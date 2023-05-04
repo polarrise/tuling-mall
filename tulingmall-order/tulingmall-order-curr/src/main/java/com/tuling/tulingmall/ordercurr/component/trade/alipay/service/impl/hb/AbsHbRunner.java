@@ -12,9 +12,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by liuyangkly on 15/10/23.
- */
 public abstract class AbsHbRunner implements Runnable {
     protected Log log = LogFactory.getLog(getClass());
 

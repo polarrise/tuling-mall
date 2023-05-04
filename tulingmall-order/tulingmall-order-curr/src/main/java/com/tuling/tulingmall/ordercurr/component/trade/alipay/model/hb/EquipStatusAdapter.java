@@ -7,9 +7,6 @@ import com.google.gson.JsonSerializer;
 
 import java.lang.reflect.Type;
 
-/**
- * Created by liuyangkly on 15/8/27.
- */
 public class EquipStatusAdapter implements JsonSerializer<EquipStatus> {
     @Override
     public JsonElement serialize(EquipStatus equipStatus, Type type, JsonSerializationContext jsonSerializationContext) {

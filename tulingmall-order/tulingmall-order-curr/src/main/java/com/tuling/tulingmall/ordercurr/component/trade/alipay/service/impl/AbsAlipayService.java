@@ -8,9 +8,6 @@ import com.tuling.tulingmall.ordercurr.component.trade.alipay.model.builder.Requ
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-/**
- * Created by liuyangkly on 15/10/22.
- */
 abstract class AbsAlipayService {
     protected Log log = LogFactory.getLog(getClass());
 

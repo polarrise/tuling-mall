@@ -1,8 +1,5 @@
 package com.tuling.tulingmall.ordercurr.component.trade.alipay.model;
 
-/**
- * Created by liuyangkly on 15/8/29.
- */
 public enum TradeStatus {
     SUCCESS  // 业务交易明确成功，比如支付成功、退货成功
 

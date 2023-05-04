@@ -10,9 +10,6 @@ import com.tuling.tulingmall.ordercurr.component.trade.alipay.model.result.Alipa
 import com.tuling.tulingmall.ordercurr.component.trade.alipay.model.result.AlipayF2FQueryResult;
 import com.tuling.tulingmall.ordercurr.component.trade.alipay.model.result.AlipayF2FRefundResult;
 
-/**
- * Created by liuyangkly on 15/7/29.
- */
 public interface AlipayTradeService {
 
     // 当面付2.0流程支付

@@ -8,7 +8,6 @@ import java.util.Collection;
 
 /**
  * @author ：楼兰
- * @date ：Created in 2021/4/15
  * @description: 分库分表后的兜底路由策略，全库表路由。
  **/
 

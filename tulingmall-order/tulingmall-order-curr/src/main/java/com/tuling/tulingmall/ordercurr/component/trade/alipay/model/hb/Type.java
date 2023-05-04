@@ -1,8 +1,5 @@
 package com.tuling.tulingmall.ordercurr.component.trade.alipay.model.hb;
 
-/**
- * Created by liuyangkly on 15/8/27.
- */
 public enum Type {
      CR       // 收银机
 

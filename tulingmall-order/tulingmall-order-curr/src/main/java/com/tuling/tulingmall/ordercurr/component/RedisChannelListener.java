@@ -20,7 +20,6 @@ package com.tuling.tulingmall.ordercurr.component;//package com.tuling.tulingmal
 // *     ||        ||  \)
 // *     (_\       (_\
 // * @author ：图灵学院
-// * @date ：Created in 2020/4/17 19:20
 // * @version: V1.0
 // * @slogan: 天下风云出我辈，一入代码岁月催
 // * @description:
