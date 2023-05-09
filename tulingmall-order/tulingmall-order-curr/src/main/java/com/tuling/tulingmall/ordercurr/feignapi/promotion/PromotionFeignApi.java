@@ -20,4 +20,11 @@ public interface PromotionFeignApi {
     @ResponseBody
     public CommonResult<List<SmsCouponHistoryDetail>> listCartCoupons(@RequestParam(value="type") Integer type,
                     @RequestBody List<CartPromotionItem> cartPromotionItemList);
+
+    @RequestMapping(value = "/useCoupon", method = RequestMethod.POST)
+    @ResponseBody
+    int useCoupon(@RequestParam("couponId") Long couponId,
+                  @RequestParam("orderId") Long orderId,
+                  @RequestParam("ordersn") String ordersn
+        );
 }

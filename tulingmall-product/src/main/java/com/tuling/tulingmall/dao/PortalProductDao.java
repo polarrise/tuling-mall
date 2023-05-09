@@ -4,6 +4,7 @@ package com.tuling.tulingmall.dao;
 import com.tuling.tulingmall.domain.CartProduct;
 import com.tuling.tulingmall.domain.PmsProductParam;
 import com.tuling.tulingmall.domain.PromotionProduct;
+import com.tuling.tulingmall.model.SmsCoupon;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -28,4 +29,6 @@ public interface PortalProductDao {
      * @return
      */
     List<Long> getAllProductId();
+
+    List<SmsCoupon> queryCoupons(Long productid);
 }

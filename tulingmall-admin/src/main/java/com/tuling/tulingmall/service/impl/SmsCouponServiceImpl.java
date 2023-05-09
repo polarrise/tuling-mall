@@ -1,5 +1,6 @@
 package com.tuling.tulingmall.service.impl;
 
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.github.pagehelper.PageHelper;
@@ -24,6 +25,7 @@ import java.util.List;
  * Created on 2018/8/28.
  */
 @Service
+@DS("promotion")
 public class SmsCouponServiceImpl implements SmsCouponService {
     @Autowired
     private SmsCouponMapper couponMapper;
@@ -85,7 +87,7 @@ public class SmsCouponServiceImpl implements SmsCouponService {
     @Override
     public int update(Long id, SmsCouponParam couponParam) {
         couponParam.setId(id);
-        int count =couponMapper.deleteById(couponParam);
+        int count =couponMapper.updateById(couponParam);
         //删除后插入优惠券和商品关系表
         if(couponParam.getUseType().equals(2)){
             for(SmsCouponProductRelation productRelation:couponParam.getProductRelationList()){

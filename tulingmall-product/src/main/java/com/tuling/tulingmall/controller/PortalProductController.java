@@ -5,6 +5,7 @@ import com.tuling.tulingmall.dao.PortalProductDao;
 import com.tuling.tulingmall.domain.*;
 import com.tuling.tulingmall.model.PmsBrand;
 import com.tuling.tulingmall.model.PmsProduct;
+import com.tuling.tulingmall.model.SmsCoupon;
 import com.tuling.tulingmall.service.PmsProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -13,7 +14,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,6 +44,17 @@ public class PortalProductController {
         PmsProductParam pmsProductParam=pmsProductService.getProductInfo(id);
         return CommonResult.success(pmsProductParam);
     }
+
+    @ApiOperation(value = "查询商品适用的优惠券")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "productid",value = "商品ID",paramType = "query",dataType = "long"),
+    })
+    @RequestMapping(value = "/getCoupons/{productid}", method = RequestMethod.GET)
+    public CommonResult getCoupons(@PathVariable Long productid) {
+        List<SmsCoupon> coupons = pmsProductService.getProductCoupons(productid);
+        return CommonResult.success(coupons);
+    }
+
 
     @ApiOperation(value = "批量推荐品牌信息#订单模块需要")
     @RequestMapping(value = "/getRecommandBrandList", method = RequestMethod.POST)

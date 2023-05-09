@@ -214,6 +214,7 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
                 if (couponHistoryDetail == null) {
                     return CommonResult.failed("该优惠券不可用");
                 }
+                useCoupon(couponHistoryDetail.getCouponId(),orderId,orderSn);
                 //对下单商品的优惠券进行处理
                 handleCouponAmount(orderItemList, couponHistoryDetail);
             }
@@ -279,6 +280,10 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
         result.put("order", order);
         result.put("orderItemList", orderItemList);
         return CommonResult.success(result, "下单成功");
+    }
+
+    private void useCoupon(Long couponId,Long orderId,String ordersn) {
+        promotionFeignApi.useCoupon(couponId,orderId,ordersn);
     }
 
     /**

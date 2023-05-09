@@ -1,7 +1,7 @@
 package com.tuling.tulingmall.promotion.controller;
 
 import com.tuling.tulingmall.common.api.CommonResult;
-import com.tuling.tulingmall.promotion.model.SmsCouponHistory;
+import com.tuling.tulingmall.model.SmsCoupon;
 import com.tuling.tulingmall.promotion.domain.CartPromotionItem;
 import com.tuling.tulingmall.promotion.domain.SmsCouponHistoryDetail;
 import com.tuling.tulingmall.promotion.service.UserCouponService;
@@ -29,7 +29,7 @@ public class PromotionController {
     @ResponseBody
     public CommonResult userActivelyGet(@PathVariable("couponId") Long couponId,
                                         @RequestHeader(value = "memberId",required = true) Long memberId,
-                                        @RequestHeader(value = "nickName",required = true) String nickName) {
+                                        @RequestHeader(value = "nickName") String nickName) {
         return userCouponService.activelyGet(couponId,memberId,nickName);
     }
 
@@ -38,11 +38,10 @@ public class PromotionController {
             allowableValues = "0,1,2", paramType = "query", dataType = "integer")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public CommonResult<List<SmsCouponHistory>> listUserCoupons(
+    public List<SmsCoupon> listUserCoupons(
             @RequestParam(value = "useStatus", required = false) Integer useStatus,
             @RequestHeader("memberId") Long memberId) {
-        List<SmsCouponHistory> couponHistoryList = userCouponService.listCoupons(useStatus,memberId);
-        return CommonResult.success(couponHistoryList);
+        return userCouponService.listCoupons(useStatus,memberId);
     }
 
 //    @ApiOperation("获取用户购物车商品的相关优惠券")
@@ -68,5 +67,13 @@ public class PromotionController {
 
         List<SmsCouponHistoryDetail> couponHistoryList = userCouponService.listCart(cartPromotionItemList, type,memberId);
         return CommonResult.success(couponHistoryList);
+    }
+
+    @RequestMapping(value = "/useCoupon", method = RequestMethod.POST)
+    @ResponseBody
+    public int useCoupon(@RequestParam("couponId") Long couponId,
+                         @RequestParam("orderId")Long orderId,
+                         @RequestParam("ordersn") String ordersn){
+        return userCouponService.useCoupon(couponId,orderId,ordersn);
     }
 }

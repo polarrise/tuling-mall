@@ -1,5 +1,6 @@
 package com.tuling.tulingmall.service.impl;
 
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.github.pagehelper.PageHelper;
@@ -26,6 +27,7 @@ import java.util.List;
  * Created on 2018/4/26.
  */
 @Service
+@DS("goods")
 public class PmsProductCategoryServiceImpl implements PmsProductCategoryService {
     @Autowired
     private PmsProductCategoryMapper productCategoryMapper;
@@ -42,6 +44,7 @@ public class PmsProductCategoryServiceImpl implements PmsProductCategoryService 
         BeanUtils.copyProperties(pmsProductCategoryParam, productCategory);
         //没有父分类时为一级分类
         setCategoryLevel(productCategory);
+//        List res = productCategoryMapper.selectList(null);
         int count = productCategoryMapper.insert(productCategory);
         //创建筛选属性关联
         List<Long> productAttributeIdList = pmsProductCategoryParam.getProductAttributeIdList();
@@ -100,7 +103,7 @@ public class PmsProductCategoryServiceImpl implements PmsProductCategoryService 
         QueryWrapper<PmsProductCategory> wrapper = new QueryWrapper<>();
         wrapper.orderByDesc("sort");
         wrapper.eq("parent_id",parentId);
-        return productCategoryMapper.selectList(wrapper);
+            return productCategoryMapper.selectList(wrapper);
     }
 
     @Override

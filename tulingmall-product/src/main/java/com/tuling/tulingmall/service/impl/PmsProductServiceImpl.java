@@ -7,6 +7,7 @@ import com.tuling.tulingmall.component.zklock.ZKLock;
 import com.tuling.tulingmall.dao.FlashPromotionProductDao;
 import com.tuling.tulingmall.dao.PortalProductDao;
 import com.tuling.tulingmall.domain.*;
+import com.tuling.tulingmall.feignapi.sms.SmsPromotionFeignApi;
 import com.tuling.tulingmall.mapper.PmsBrandMapper;
 import com.tuling.tulingmall.mapper.PmsProductMapper;
 import com.tuling.tulingmall.mapper.SmsFlashPromotionMapper;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -72,6 +74,9 @@ public class PmsProductServiceImpl implements PmsProductService {
 
     @Autowired
     private RedisOpsExtUtil redisOpsUtil;
+
+    @Resource
+    private SmsPromotionFeignApi smsPromotionFeignApi;
 
     private Map<String, PmsProductParam> cacheMap = new ConcurrentHashMap<>();
 
@@ -387,5 +392,10 @@ public class PmsProductServiceImpl implements PmsProductService {
      */
     public List<Long> getAllProductId() {
         return portalProductDao.getAllProductId();
+    }
+
+    @Override
+    public List<SmsCoupon> getProductCoupons(Long productid) {
+        return portalProductDao.queryCoupons(productid);
     }
 }

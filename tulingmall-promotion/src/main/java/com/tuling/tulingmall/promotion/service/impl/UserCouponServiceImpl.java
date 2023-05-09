@@ -1,6 +1,8 @@
 package com.tuling.tulingmall.promotion.service.impl;
 
 import com.tuling.tulingmall.common.api.CommonResult;
+import com.tuling.tulingmall.model.SmsCoupon;
+import com.tuling.tulingmall.model.SmsCouponHistory;
 import com.tuling.tulingmall.promotion.mapper.SmsCouponHistoryMapper;
 import com.tuling.tulingmall.promotion.mapper.SmsCouponMapper;
 import com.tuling.tulingmall.promotion.dao.SmsCouponHistoryDao;
@@ -47,9 +49,6 @@ public class UserCouponServiceImpl implements UserCouponService {
             return CommonResult.failed("优惠券已经领完了");
         }
         Date now = new Date();
-        if(now.before(coupon.getEnableTime())){
-            return CommonResult.failed("优惠券还没到领取时间");
-        }
         //判断用户领取的优惠券数量是否超过限制
         SmsCouponHistoryExample couponHistoryExample = new SmsCouponHistoryExample();
         couponHistoryExample.createCriteria().andCouponIdEqualTo(couponId).andMemberIdEqualTo(memberId);
@@ -107,15 +106,9 @@ public class UserCouponServiceImpl implements UserCouponService {
     }
 
     @Override
-    public List<SmsCouponHistory> listCoupons(Integer useStatus, Long memberId) {
+    public List<SmsCoupon> listCoupons(Integer useStatus, Long memberId) {
 
-        SmsCouponHistoryExample couponHistoryExample=new SmsCouponHistoryExample();
-        SmsCouponHistoryExample.Criteria criteria = couponHistoryExample.createCriteria();
-        criteria.andMemberIdEqualTo(memberId);
-        if(useStatus!=null){
-            criteria.andUseStatusEqualTo(useStatus);
-        }
-        return smsCouponHistoryMapper.selectByExample(couponHistoryExample);
+        return smsCouponHistoryDao.queryUserCoupon(memberId,useStatus);
     }
 
     @Override
@@ -174,6 +167,19 @@ public class UserCouponServiceImpl implements UserCouponService {
         }else{
             return disableList;
         }
+    }
+
+    @Override
+    public int useCoupon(Long couponId,Long orderId,String ordersn) {
+        SmsCouponHistoryExample example = new SmsCouponHistoryExample();
+        SmsCouponHistoryExample.Criteria criteria = example.createCriteria();
+        criteria.andCouponIdEqualTo(couponId);
+        SmsCouponHistory record = new SmsCouponHistory();
+        record.setUseStatus(1); //1==已使用
+        record.setUseTime(new Date());
+        record.setOrderId(orderId);
+        record.setOrderSn(ordersn);
+        return smsCouponHistoryMapper.updateByExampleSelective(record,example);
     }
 
     private BigDecimal calcTotalAmount(List<CartPromotionItem> cartItemList) {

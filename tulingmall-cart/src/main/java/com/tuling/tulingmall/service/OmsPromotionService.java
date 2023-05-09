@@ -1,5 +1,6 @@
 package com.tuling.tulingmall.service;
 
+import com.tuling.tulingmall.common.api.CommonResult;
 import com.tuling.tulingmall.domain.CartPromotionItem;
 import com.tuling.tulingmall.model.OmsCartItem;
 
@@ -15,4 +16,6 @@ public interface OmsPromotionService {
      * @param cartItemList 购物车
      */
     List<CartPromotionItem> calcCartPromotion(List<OmsCartItem> cartItemList);
+
+    CommonResult activeAndGetCoupon(Long couponId);
 }

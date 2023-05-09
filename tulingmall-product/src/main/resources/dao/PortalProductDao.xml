@@ -211,4 +211,15 @@
     <select id="getAllProductId" resultType="java.lang.Long">
         select p.id from tl_mall_goods.pms_product p where p.delete_status=0
     </select>
+
+    <select id="queryCoupons" resultType="com.tuling.tulingmall.model.SmsCoupon">
+        select sc.id,sc.name,sc.amount,sc.min_point
+        from tl_mall_promotion.sms_coupon sc
+        where sc.min_point &lt; (
+            select max(pp.price)
+            from tl_mall_goods.pms_product pp
+            where pp.id=#{id})
+          and sc.amount>0 and sc.end_time>now() and sc.start_time &lt; now() and sc.use_type=0
+        order by sc.amount desc limit 4
+    </select>
 </mapper>

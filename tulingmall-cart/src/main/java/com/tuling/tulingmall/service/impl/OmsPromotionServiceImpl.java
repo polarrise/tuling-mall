@@ -1,8 +1,10 @@
 package com.tuling.tulingmall.service.impl;
 
+import com.tuling.tulingmall.common.api.CommonResult;
 import com.tuling.tulingmall.domain.CartPromotionItem;
 import com.tuling.tulingmall.domain.PromotionProduct;
 import com.tuling.tulingmall.feignapi.pms.PmsProductFeignApi;
+import com.tuling.tulingmall.feignapi.sms.SmsPromotionFeignApi;
 import com.tuling.tulingmall.model.OmsCartItem;
 import com.tuling.tulingmall.model.PmsProductFullReduction;
 import com.tuling.tulingmall.model.PmsProductLadder;
@@ -12,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
@@ -25,6 +28,9 @@ public class OmsPromotionServiceImpl implements OmsPromotionService {
 
     @Autowired
     private PmsProductFeignApi pmsProductFeignApi;
+
+    @Resource
+    private SmsPromotionFeignApi smsPromotionFeignApi;
 
     @Override
     public List<CartPromotionItem> calcCartPromotion(List<OmsCartItem> cartItemList) {
@@ -108,6 +114,11 @@ public class OmsPromotionServiceImpl implements OmsPromotionService {
             }
         }
         return cartPromotionItemList;
+    }
+
+    @Override
+    public CommonResult activeAndGetCoupon(Long couponId) {
+        return smsPromotionFeignApi.userActivelyGet(couponId);
     }
 
     /**

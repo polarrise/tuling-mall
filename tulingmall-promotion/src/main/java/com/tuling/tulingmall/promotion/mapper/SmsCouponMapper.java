@@ -1,6 +1,6 @@
 package com.tuling.tulingmall.promotion.mapper;
 
-import com.tuling.tulingmall.promotion.model.SmsCoupon;
+import com.tuling.tulingmall.model.SmsCoupon;
 import com.tuling.tulingmall.promotion.model.SmsCouponExample;
 import org.apache.ibatis.annotations.Param;
 

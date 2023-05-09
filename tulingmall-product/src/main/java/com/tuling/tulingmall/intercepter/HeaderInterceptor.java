@@ -1,4 +1,4 @@
-package com.tuling.tulingmall.feignapi.interceptor;
+package com.tuling.tulingmall.intercepter;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
@@ -25,7 +25,6 @@ public class HeaderInterceptor implements RequestInterceptor {
             HttpServletRequest request = attributes.getRequest();
             log.info("从Request中解析请求头:{}",request.getHeader("memberId"));
             template.header("memberId",request.getHeader("memberId"));
-            template.header("nickName",request.getHeader("nickName"));
         }
     }
 }

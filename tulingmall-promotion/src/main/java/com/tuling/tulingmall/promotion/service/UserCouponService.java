@@ -1,7 +1,7 @@
 package com.tuling.tulingmall.promotion.service;
 
 import com.tuling.tulingmall.common.api.CommonResult;
-import com.tuling.tulingmall.promotion.model.SmsCouponHistory;
+import com.tuling.tulingmall.model.SmsCoupon;
 import com.tuling.tulingmall.promotion.domain.CartPromotionItem;
 import com.tuling.tulingmall.promotion.domain.SmsCouponHistoryDetail;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,10 +23,12 @@ public interface UserCouponService {
      * 获取优惠券列表
      * @param useStatus 优惠券的使用状态
      */
-    List<SmsCouponHistory> listCoupons(Integer useStatus, Long memberId);
+    List<SmsCoupon> listCoupons(Integer useStatus, Long memberId);
 
     /**
      * 根据购物车信息获取可用优惠券
      */
     List<SmsCouponHistoryDetail> listCart(List<CartPromotionItem> cartItemList, Integer type,Long memberId);
+
+    int useCoupon(Long couponId,Long orderId,String ordersn);
 }

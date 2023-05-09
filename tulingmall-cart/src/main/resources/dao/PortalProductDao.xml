@@ -133,4 +133,5 @@
     <select id="getAllProductId" resultType="java.lang.Long">
         select p.id from tl_mall_goods.pms_product p where p.delete_status=0
     </select>
+
 </mapper>

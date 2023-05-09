@@ -6,6 +6,7 @@ import com.tuling.tulingmall.common.exception.BusinessException;
 import com.tuling.tulingmall.domain.CartPromotionItem;
 import com.tuling.tulingmall.domain.ConfirmOrderResult;
 import com.tuling.tulingmall.domain.SmsCouponHistoryDetail;
+import com.tuling.tulingmall.feignapi.sms.SmsPromotionFeignApi;
 import com.tuling.tulingmall.feignapi.ums.UmsMemberFeignApi;
 import com.tuling.tulingmall.model.*;
 import com.tuling.tulingmall.service.OmsCartItemService;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -31,6 +33,9 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
 
     @Autowired
     private OmsCartItemService cartItemService;
+
+    @Resource
+    private SmsPromotionFeignApi promotionFeignApi;
 
     /**
      * 确认选择购买的商品
@@ -59,6 +64,9 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
         //计算总金额、活动优惠、应付金额
         ConfirmOrderResult.CalcAmount calcAmount = calcCartAmount(cartPromotionItemList);
         result.setCalcAmount(calcAmount);
+
+        List<SmsCoupon> smsCouponHistories = promotionFeignApi.listUserCoupons(0);
+        result.setCouponList(smsCouponHistories);
         return result;
     }
 

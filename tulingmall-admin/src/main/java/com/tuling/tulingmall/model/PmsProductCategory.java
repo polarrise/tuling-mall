@@ -1,5 +1,6 @@
 package com.tuling.tulingmall.model;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;

@@ -1,7 +1,7 @@
 package com.tuling.tulingmall.promotion.domain;
 
-import com.tuling.tulingmall.promotion.model.SmsCoupon;
-import com.tuling.tulingmall.promotion.model.SmsCouponHistory;
+import com.tuling.tulingmall.model.SmsCoupon;
+import com.tuling.tulingmall.model.SmsCouponHistory;
 import com.tuling.tulingmall.promotion.model.SmsCouponProductCategoryRelation;
 import com.tuling.tulingmall.promotion.model.SmsCouponProductRelation;
 

@@ -42,7 +42,6 @@ import java.util.concurrent.TimeUnit;
  * (_\       (_\
  *
  * @author ：图灵学院
- * @date ：Created in 2019/12/31 17:22
  * @version: V1.0
  * @slogan: 天下风云出我辈，一入代码岁月催
  * @description:
@@ -65,8 +64,6 @@ public class PmsProductServiceImpl implements PmsProductService {
 
     @Autowired
     private RedisOpsExtUtil redisOpsUtil;
-
-    private Map<String, PmsProductParam> cacheMap = new ConcurrentHashMap<>();
 
     @Autowired
     private LocalCache cache;
@@ -97,8 +94,6 @@ public class PmsProductServiceImpl implements PmsProductService {
         }
         checkFlash(id, productInfo);//判断是否为秒杀商品
         return productInfo;
-
-
     }
 
     /**

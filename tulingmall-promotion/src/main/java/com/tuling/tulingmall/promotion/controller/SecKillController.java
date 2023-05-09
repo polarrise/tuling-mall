@@ -2,16 +2,11 @@ package com.tuling.tulingmall.promotion.controller;
 
 import com.tuling.tulingmall.common.api.CommonResult;
 import com.tuling.tulingmall.promotion.dao.MiaoShaStockDao;
-import com.tuling.tulingmall.promotion.domain.CartPromotionItem;
 import com.tuling.tulingmall.promotion.domain.FlashPromotionProduct;
-import com.tuling.tulingmall.promotion.domain.SmsCouponHistoryDetail;
-import com.tuling.tulingmall.promotion.model.SmsCouponHistory;
 import com.tuling.tulingmall.promotion.service.HomePromotionService;
 import com.tuling.tulingmall.promotion.service.ISecKillStaticHtmlService;
-import com.tuling.tulingmall.promotion.service.UserCouponService;
 import com.tuling.tulingmall.promotion.service.impl.ConstantPromotion;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

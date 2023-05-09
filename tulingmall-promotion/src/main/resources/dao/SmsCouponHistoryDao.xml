@@ -33,4 +33,10 @@
         WHERE ch.member_id = #{memberId}
         AND ch.use_status = 0
     </select>
+    <select id="queryUserCoupon" resultType="com.tuling.tulingmall.model.SmsCoupon">
+        select sc.* from sms_coupon sc
+            inner join sms_coupon_history sch on sc.id = sch.coupon_id
+        where sch.member_id=#{memberId} and sch.use_status=#{useStatus}
+        order by sc.amount desc limit 4;
+    </select>
 </mapper>

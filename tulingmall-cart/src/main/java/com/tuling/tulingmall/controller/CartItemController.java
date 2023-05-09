@@ -9,16 +9,19 @@ import com.tuling.tulingmall.domain.OrderParam;
 import com.tuling.tulingmall.model.OmsCartItem;
 import com.tuling.tulingmall.service.OmsCartItemService;
 import com.tuling.tulingmall.service.OmsPortalOrderService;
+import com.tuling.tulingmall.service.OmsPromotionService;
 import com.tuling.tulingmall.service.SecKillOrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author roy
@@ -37,6 +40,9 @@ public class CartItemController {
 
     @Autowired
     private OmsPortalOrderService portalOrderService;
+
+    @Resource
+    private OmsPromotionService promotionService;
 
     @ApiOperation("根据购物车信息生成确认单信息")
     @ApiImplicitParam(name = "itemId",value = "购物车选择购买的选项ID",allowMultiple = true,paramType = "query",dataType = "long")
@@ -66,12 +72,24 @@ public class CartItemController {
     @ApiOperation(value = "添加商品到购物车", notes = "修改购物逻辑,数据不必全都从前台传")
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     @ResponseBody
-    public CommonResult add(@RequestBody OmsCartItem cartItem, @RequestHeader("memberId") Long memberId, @RequestHeader("nickName") String nickName) {
+    public CommonResult add(@RequestBody OmsCartItem cartItem,
+                            @RequestHeader("memberId") Long memberId,
+                            @RequestHeader("nickName") String nickName) {
         int count = cartItemService.add(cartItem, memberId, nickName);
         if (count > 0) {
             return CommonResult.success(count);
         }
         return CommonResult.failed();
+    }
+
+    @ApiOperation(value = "详情页面领取优惠券", notes = "商品单品页领取优惠券")
+    @RequestMapping(value = "/addCoupon",method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult addCoupon(@RequestBody Map<String,Long> params,
+            @RequestHeader("memberId") Long memberId,
+            @RequestHeader("nickName") String nickName){
+        Long couponId = params.get("couponId");
+        return promotionService.activeAndGetCoupon(couponId);
     }
 
     @ApiOperation("获取某个会员的购物车列表")

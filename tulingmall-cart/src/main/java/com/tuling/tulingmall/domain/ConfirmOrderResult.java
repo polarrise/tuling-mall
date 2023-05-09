@@ -1,5 +1,7 @@
 package com.tuling.tulingmall.domain;
 
+import com.tuling.tulingmall.model.SmsCoupon;
+import com.tuling.tulingmall.model.SmsCouponHistory;
 import com.tuling.tulingmall.model.UmsIntegrationConsumeSetting;
 import com.tuling.tulingmall.model.UmsMemberReceiveAddress;
 
@@ -16,13 +18,21 @@ public class ConfirmOrderResult {
     //用户收货地址列表
     private List<UmsMemberReceiveAddress> memberReceiveAddressList;
     //用户可用优惠券列表
-    private List<SmsCouponHistoryDetail> couponHistoryDetailList;
+    private List<SmsCoupon> couponList;
     //积分使用规则
     private UmsIntegrationConsumeSetting integrationConsumeSetting;
     //会员持有的积分
     private Integer memberIntegration;
     //计算的金额
     private CalcAmount calcAmount;
+
+    public List<SmsCoupon> getCouponList() {
+        return couponList;
+    }
+
+    public void setCouponList(List<SmsCoupon> couponList) {
+        this.couponList = couponList;
+    }
 
     public List<CartPromotionItem> getCartPromotionItemList() {
         return cartPromotionItemList;
@@ -38,14 +48,6 @@ public class ConfirmOrderResult {
 
     public void setMemberReceiveAddressList(List<UmsMemberReceiveAddress> memberReceiveAddressList) {
         this.memberReceiveAddressList = memberReceiveAddressList;
-    }
-
-    public List<SmsCouponHistoryDetail> getCouponHistoryDetailList() {
-        return couponHistoryDetailList;
-    }
-
-    public void setCouponHistoryDetailList(List<SmsCouponHistoryDetail> couponHistoryDetailList) {
-        this.couponHistoryDetailList = couponHistoryDetailList;
     }
 
     public UmsIntegrationConsumeSetting getIntegrationConsumeSetting() {
@@ -113,5 +115,7 @@ public class ConfirmOrderResult {
         public void setPayAmount(BigDecimal payAmount) {
             this.payAmount = payAmount;
         }
+
+
     }
 }

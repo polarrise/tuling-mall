@@ -22,6 +22,7 @@ public class PmsProductParam extends PmsProduct {
     private List<PmsSkuStock> skuStockList;
     @ApiModelProperty("商品参数及自定义规格属性")
     private List<PmsProductAttributeValue> productAttributeValueList;
+
     //秒杀活动信息
     /**
      * 秒杀活动价格
@@ -149,4 +150,5 @@ public class PmsProductParam extends PmsProduct {
     public void setProductAttributeValueList(List<PmsProductAttributeValue> productAttributeValueList) {
         this.productAttributeValueList = productAttributeValueList;
     }
+
 }

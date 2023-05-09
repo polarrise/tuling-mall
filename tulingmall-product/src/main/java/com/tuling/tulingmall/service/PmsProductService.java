@@ -4,6 +4,7 @@ package com.tuling.tulingmall.service;
 import com.tuling.tulingmall.domain.*;
 import com.tuling.tulingmall.model.PmsBrand;
 import com.tuling.tulingmall.model.PmsProduct;
+import com.tuling.tulingmall.model.SmsCoupon;
 
 import java.util.List;
 
@@ -60,4 +61,6 @@ public interface PmsProductService {
      * @return
      */
     List<Long> getAllProductId();
+
+    List<SmsCoupon> getProductCoupons(Long productid);
 }
