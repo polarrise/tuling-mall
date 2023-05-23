@@ -202,23 +202,6 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
                         "正尝试每个订单详情单独获得id");
                 orderItem.setId(Long.valueOf(unqidFeignApi.getSegmentId(OrderConstant.LEAF_ORDER_ITEM_ID_KEY)));
             }
-            //判断是否使用了优惠券
-            if (orderParam.getCouponId() == null) {
-                //不用优惠券
-                for (OmsOrderItem orderItemTemp : orderItemList) {
-                    orderItemTemp.setCouponAmount(new BigDecimal(0));
-                }
-            } else {
-                //使用优惠券
-                SmsCouponHistoryDetail couponHistoryDetail = getUseCoupon(cartPromotionItemList, orderParam.getCouponId());
-                if (couponHistoryDetail == null) {
-                    return CommonResult.failed("该优惠券不可用");
-                }
-                useCoupon(couponHistoryDetail.getCouponId(),orderId,orderSn);
-                //对下单商品的优惠券进行处理
-                handleCouponAmount(orderItemList, couponHistoryDetail);
-            }
-            orderItem.setCouponAmount(new BigDecimal(0));
             orderItem.setIntegrationAmount(new BigDecimal(0));
             orderItemList.add(orderItem);
             itemListIndex++;
@@ -237,9 +220,28 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
         order.setDiscountAmount(new BigDecimal(0));
         order.setTotalAmount(calcTotalAmount(orderItemList));
         order.setFreightAmount(new BigDecimal(0));
+        //判断是否使用了优惠券
+        if (orderParam.getCouponId() == null) {
+            //不用优惠券
+            for (OmsOrderItem orderItemTemp : orderItemList) {
+                orderItemTemp.setCouponAmount(new BigDecimal(0));
+            }
+            order.setCouponAmount(new BigDecimal(0));
+        } else {
+            //使用优惠券
+            SmsCouponHistoryDetail couponHistoryDetail = getUseCoupon(cartPromotionItemList, orderParam.getCouponId());
+            if (couponHistoryDetail == null) {
+                return CommonResult.failed("该优惠券不可用");
+            }
+            useCoupon(couponHistoryDetail.getCouponId(),orderId,orderSn);
+            //对下单商品的优惠券进行处理
+            handleCouponAmount(orderItemList, couponHistoryDetail);
+            order.setCouponAmount(couponHistoryDetail.getCoupon().getAmount());
+        }
+
         order.setPromotionAmount(new BigDecimal(0));
         order.setPromotionInfo("无优惠");
-        order.setCouponAmount(new BigDecimal(0));
+
         order.setIntegration(0);
         order.setIntegrationAmount(new BigDecimal(0));
 

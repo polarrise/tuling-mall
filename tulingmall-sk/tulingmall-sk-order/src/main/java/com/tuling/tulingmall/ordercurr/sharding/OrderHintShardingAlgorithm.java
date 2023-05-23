@@ -1,10 +1,11 @@
 package com.tuling.tulingmall.ordercurr.sharding;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shardingsphere.api.sharding.hint.HintShardingAlgorithm;
-import org.apache.shardingsphere.api.sharding.hint.HintShardingValue;
+import org.apache.shardingsphere.sharding.api.sharding.hint.HintShardingAlgorithm;
+import org.apache.shardingsphere.sharding.api.sharding.hint.HintShardingValue;
 
 import java.util.Collection;
+import java.util.Properties;
 
 /**
  *                  ,;,,;
@@ -24,6 +25,17 @@ import java.util.Collection;
  **/
 @Slf4j
 public class OrderHintShardingAlgorithm implements HintShardingAlgorithm {
+
+    private Properties props;
+    @Override
+    public Properties getProps() {
+        return props;
+    }
+
+    @Override
+    public void init(Properties props) {
+        this.props = props;
+    }
     /**
      * 返回的是查询的真实节点
      * @param collection

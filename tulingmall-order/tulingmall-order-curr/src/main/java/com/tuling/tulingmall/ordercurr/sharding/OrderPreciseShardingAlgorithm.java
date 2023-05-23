@@ -1,10 +1,10 @@
 package com.tuling.tulingmall.ordercurr.sharding;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shardingsphere.api.sharding.standard.PreciseShardingAlgorithm;
-import org.apache.shardingsphere.api.sharding.standard.PreciseShardingValue;
+import org.apache.shardingsphere.sharding.api.sharding.standard.PreciseShardingValue;
 
 import java.util.Collection;
+import java.util.Properties;
 
 /**
  *                  ,;,,;
@@ -23,19 +23,30 @@ import java.util.Collection;
  * 只支持单分片字段条件路由，不支持多分片字段
  **/
 @Slf4j
-public class OrderPreciseShardingAlgorithm implements PreciseShardingAlgorithm {
-    @Override
-    public String doSharding(Collection collection, PreciseShardingValue preciseShardingValue) {
-
-        // 真实节点
-        collection.stream().forEach((item)->{
-            log.info("actual node table:{}",item);
-        });
-
-        log.info("logic table name:{},rout column:{}",preciseShardingValue.getLogicTableName(),preciseShardingValue.getColumnName());
-
-        //精确分片
-        log.info("column value:{}",preciseShardingValue.getValue());
-        return null;
-    }
+public class OrderPreciseShardingAlgorithm{
+//public class OrderPreciseShardingAlgorithm implements PreciseShardingAlgorithm {
+//    private Properties props;
+//    @Override
+//    public Properties getProps() {
+//        return props;
+//    }
+//
+//    @Override
+//    public void init(Properties props) {
+//        this.props = props;
+//    }
+//    @Override
+//    public String doSharding(Collection collection, PreciseShardingValue preciseShardingValue) {
+//
+//        // 真实节点
+//        collection.stream().forEach((item)->{
+//            log.info("actual node table:{}",item);
+//        });
+//
+//        log.info("logic table name:{},rout column:{}",preciseShardingValue.getLogicTableName(),preciseShardingValue.getColumnName());
+//
+//        //精确分片
+//        log.info("column value:{}",preciseShardingValue.getValue());
+//        return null;
+//    }
 }

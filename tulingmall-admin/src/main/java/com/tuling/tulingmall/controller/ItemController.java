@@ -23,7 +23,6 @@ public class ItemController {
     @RequestMapping(value = "/static/{id}",method = RequestMethod.GET)
     @ApiOperation(value = "静态化商品")
     public CommonResult<String> buildStatic(@PathVariable Long id){
-
         String path = itemService.toStatic(id);
         if(StringUtils.isEmpty(path)){
             return  CommonResult.failed("静态化商品页面出现异常");

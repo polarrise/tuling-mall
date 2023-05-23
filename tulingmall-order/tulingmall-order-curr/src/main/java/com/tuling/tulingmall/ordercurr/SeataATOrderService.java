@@ -17,7 +17,7 @@
 
 package com.tuling.tulingmall.ordercurr;
 
-import org.apache.shardingsphere.transaction.annotation.ShardingTransactionType;
+import org.apache.shardingsphere.transaction.annotation.ShardingSphereTransactionType;
 import org.apache.shardingsphere.transaction.core.TransactionType;
 import org.apache.shardingsphere.transaction.core.TransactionTypeHolder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +63,7 @@ public class SeataATOrderService {
      * @return transaction type
      */
     @Transactional
-    @ShardingTransactionType(TransactionType.BASE)
+    @ShardingSphereTransactionType(TransactionType.BASE)
     public TransactionType insert(final int count) {
         return jdbcTemplate.execute("INSERT INTO t_order (user_id, status) VALUES (?, ?)", (PreparedStatementCallback<TransactionType>) preparedStatement -> {
             doInsert(count, preparedStatement);
@@ -77,7 +77,7 @@ public class SeataATOrderService {
      * @param count insert record count
      */
     @Transactional
-    @ShardingTransactionType(TransactionType.BASE)
+    @ShardingSphereTransactionType(TransactionType.BASE)
     public void insertFailed(final int count) {
         jdbcTemplate.execute("INSERT INTO t_order (user_id, status) VALUES (?, ?)", (PreparedStatementCallback<TransactionType>) preparedStatement -> {
             doInsert(count, preparedStatement);

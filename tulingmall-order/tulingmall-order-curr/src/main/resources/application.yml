@@ -17,3 +17,54 @@ trade:
     qrcode:
       storePath: D:/alipay/qr-code
       paySuccessCallBack: http://roykingw.free.idcfengye.com/order/paySuccess
+#分库分表配置
+#spring:
+#  shardingsphere:
+#    datasource:
+#      names: ds-master
+#      ds-master:
+#        type: com.alibaba.druid.pool.DruidDataSource
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+#        url: jdbc:mysql://192.168.65.223:3306/tl_mall_order?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+#        initialSize: 5
+#        minIdle: 10
+#        maxActive: 30
+#        validationQuery: SELECT 1 FROM DUAL
+#        username: tlmall
+#        password: tlmall123
+#    rules:
+#      sharding:
+#        tables:
+#          oms_order:
+#            actual-data-nodes: ds-master.oms_order_$->{0..31}
+#            table-strategy:
+#              complex:
+#                sharding-columns: id,member_id
+#                sharding-algorithm-name: oms_order_table_alg
+#          oms_order_item:
+#            actual-data-nodes: ds-master.oms_order_item_$->{0..31}
+#            table-strategy:
+#              complex:
+#                sharding-columns: order_id
+#                sharding-algorithm-name: oms_order_item_table_alg
+#        sharding-algorithms:
+#          oms_order_table_alg:
+#            type: CLASS_BASED
+#            props:
+#              algorithmClassName: com.tuling.tulingmall.ordercurr.sharding.OmsOrderShardingAlgorithm
+#              strategy: COMPLEX
+#          oms_order_item_table_alg:
+#            type: CLASS_BASED
+#            props:
+#              algorithmClassName: com.tuling.tulingmall.ordercurr.sharding.OmsOrderItemShardingAlgorithm
+#              strategy: COMPLEX
+#        binding-tables:
+#          - oms_order,oms_order_item
+#        broadcast-tables:
+#          - oms_company_address
+#          - oms_order_operate_history
+#          - oms_order_return_apply
+#          - oms_order_return_reason
+#          - oms_order_setting
+#    props:
+#      sql-show: true

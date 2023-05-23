@@ -4,7 +4,7 @@ import com.tuling.tulingmall.TulingmallSkOrderApplication;
 import com.tuling.tulingmall.rediscomm.util.RedisClusterUtil;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.shardingsphere.spi.keygen.ShardingKeyGenerator;
+import org.apache.shardingsphere.sharding.spi.KeyGenerateAlgorithm;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,14 +26,14 @@ import java.util.concurrent.TimeUnit;
  * @slogan: 天下风云出我辈，一入代码岁月催
  * @description: 全局唯一主键生成器【分库分表专用】
  **/
-public class OrderByRedisKeyGenerator implements ShardingKeyGenerator {
+public class OrderByRedisKeyGenerator implements KeyGenerateAlgorithm {
 
     @Getter
     private final String type = "CUSTOM";
 
     @Getter
     @Setter
-    private Properties properties = new Properties();
+    private Properties props = new Properties();
 
     /**
      * 生成18位订单编号:8位日期+3位平台ID+7位以上自增id
@@ -49,7 +49,7 @@ public class OrderByRedisKeyGenerator implements ShardingKeyGenerator {
         RedisClusterUtil redisOpsUtil = TulingmallSkOrderApplication.getBean("redisOpsUtil");
 
         String date = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        String key = properties.getProperty("redis.prefix") + date;
+        String key = props.getProperty("redis.prefix") + date;
         //增长值
         Long increment = null;
         if(redisOpsUtil.hasKey(key)){
@@ -59,7 +59,7 @@ public class OrderByRedisKeyGenerator implements ShardingKeyGenerator {
             redisOpsUtil.expire(key,24, TimeUnit.HOURS);
         }
         sb.append(date);
-        sb.append(String.format("%03d", Integer.parseInt(properties.getProperty("worker.id"))));
+        sb.append(String.format("%03d", Integer.parseInt(props.getProperty("worker.id"))));
         String incrementStr = increment.toString();
         if (incrementStr.length() <= 7) {
             sb.append(String.format("%07d", increment));
@@ -69,4 +69,8 @@ public class OrderByRedisKeyGenerator implements ShardingKeyGenerator {
         return Long.parseLong(sb.toString());
     }
 
+    @Override
+    public void init(Properties props) {
+        this.props = props;
+    }
 }

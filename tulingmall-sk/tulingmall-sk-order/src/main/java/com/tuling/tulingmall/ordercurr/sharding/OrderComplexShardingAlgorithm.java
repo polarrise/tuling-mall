@@ -1,17 +1,29 @@
 package com.tuling.tulingmall.ordercurr.sharding;
 
 import com.google.common.collect.Range;
-import org.apache.shardingsphere.api.sharding.complex.ComplexKeysShardingAlgorithm;
-import org.apache.shardingsphere.api.sharding.complex.ComplexKeysShardingValue;
+import org.apache.shardingsphere.sharding.api.sharding.complex.ComplexKeysShardingAlgorithm;
+import org.apache.shardingsphere.sharding.api.sharding.complex.ComplexKeysShardingValue;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * @description: 复合分片算法配合复合策略使用，支持范围与精确查询
  **/
 public class OrderComplexShardingAlgorithm implements ComplexKeysShardingAlgorithm {
+
+    private Properties props;
+    @Override
+    public Properties getProps() {
+        return props;
+    }
+
+    @Override
+    public void init(Properties props) {
+        this.props = props;
+    }
 
     @Override
     public Collection<String> doSharding(Collection collection, ComplexKeysShardingValue complexKeysShardingValue) {

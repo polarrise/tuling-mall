@@ -51,7 +51,10 @@ public class UserCouponServiceImpl implements UserCouponService {
         Date now = new Date();
         //判断用户领取的优惠券数量是否超过限制
         SmsCouponHistoryExample couponHistoryExample = new SmsCouponHistoryExample();
-        couponHistoryExample.createCriteria().andCouponIdEqualTo(couponId).andMemberIdEqualTo(memberId);
+        couponHistoryExample.createCriteria()
+                .andCouponIdEqualTo(couponId)
+                .andMemberIdEqualTo(memberId)
+                .andUseStatusEqualTo(ConstantPromotion.USER_COUPON_USE_STATE_UNUSE);
         long count = smsCouponHistoryMapper.countByExample(couponHistoryExample);
         if(count>=coupon.getPerLimit()){
             return CommonResult.failed("已经领取过该优惠券");

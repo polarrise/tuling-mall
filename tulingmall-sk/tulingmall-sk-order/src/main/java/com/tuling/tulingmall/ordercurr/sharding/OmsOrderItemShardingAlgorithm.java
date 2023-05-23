@@ -2,8 +2,8 @@ package com.tuling.tulingmall.ordercurr.sharding;
 
 import com.google.common.collect.Range;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shardingsphere.api.sharding.complex.ComplexKeysShardingAlgorithm;
-import org.apache.shardingsphere.api.sharding.complex.ComplexKeysShardingValue;
+import org.apache.shardingsphere.sharding.api.sharding.complex.ComplexKeysShardingAlgorithm;
+import org.apache.shardingsphere.sharding.api.sharding.complex.ComplexKeysShardingValue;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,6 +18,16 @@ import java.util.stream.Collectors;
 @Slf4j
 public class OmsOrderItemShardingAlgorithm implements ComplexKeysShardingAlgorithm<String> {
 
+    private Properties props;
+    @Override
+    public Properties getProps() {
+        return props;
+    }
+
+    @Override
+    public void init(Properties props) {
+        this.props = props;
+    }
     /* 订单编号列名 */
     private static final String COLUMN_SHARDING_KEY = "order_id";
 

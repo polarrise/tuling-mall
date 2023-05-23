@@ -181,7 +181,7 @@
 <!--            <plugin>-->
 <!--                <groupId>org.apache.maven.plugins</groupId>-->
 <!--                <artifactId>maven-dependency-plugin</artifactId>-->
-<!--                &lt;!&ndash; <version>2.10</version> &ndash;&gt;-->
+<!--                 <version>2.10</version>-->
 <!--                <executions>-->
 <!--                    <execution>-->
 <!--                        <id>copy-dependencies</id>-->

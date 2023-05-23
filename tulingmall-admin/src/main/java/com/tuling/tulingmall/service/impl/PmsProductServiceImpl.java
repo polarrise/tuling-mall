@@ -1,5 +1,6 @@
 package com.tuling.tulingmall.service.impl;
 
+import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.github.pagehelper.PageHelper;
@@ -63,7 +64,7 @@ public class PmsProductServiceImpl implements PmsProductService {
     @Autowired
     private PmsProductVertifyRecordDao productVertifyRecordDao;
 
-    @Override
+    @Override()
     public int create(PmsProductParam productParam) {
         int count;
         //创建商品
