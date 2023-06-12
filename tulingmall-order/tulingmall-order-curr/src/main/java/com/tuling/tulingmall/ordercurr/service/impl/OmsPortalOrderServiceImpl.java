@@ -139,7 +139,7 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
         String OrderIdTail = memberId < 10 ? "0" + strMemberId
                 : strMemberId.substring(strMemberId.length() - 2);
         log.debug("生成订单的orderId，组成元素为：{},{}",leafOrderId,OrderIdTail);
-        return Long.valueOf(leafOrderId + OrderIdTail);
+        return Long.valueOf(leafOrderId + OrderIdTail) ;
     }
     /**
      * 生成订单
@@ -155,7 +155,7 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
             return CommonResult.failed(ResultCode.VALIDATE_FAILED,"参数不能为空！");
         }
         Long orderId = orderParam.getOrderId();
-        if(null == orderId){
+        if(null == orderId || orderId <= 0){
             orderId = generateOrderId(memberId);
             log.debug("前端页面未传递orderId，临时生成：{}",orderId);
         }else{

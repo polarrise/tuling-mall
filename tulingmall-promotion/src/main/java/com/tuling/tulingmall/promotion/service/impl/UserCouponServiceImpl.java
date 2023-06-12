@@ -74,11 +74,11 @@ public class UserCouponServiceImpl implements UserCouponService {
         /*修改优惠券表的数量、领取数量
         这种实现无疑有并发问题，比如AB用户同时领取优惠券，此时优惠券数量为100，那么在写库的时候
         A用户set数量100 - 1，B用户set数量减100 - 1，而其实应该 100 - 2
-        领取数量receive_count同理
+        领取数量receive_count同理*/
         coupon.setCount(coupon.getCount()-1);
         coupon.setReceiveCount(coupon.getReceiveCount()==null?1:coupon.getReceiveCount()+1);
-        couponMapper.updateByPrimaryKey(coupon);
-         */
+        smsCouponMapper.updateByPrimaryKey(coupon);
+
         if(0 == smsCouponMapper.updateCountAndReceiveCountByPrimaryKey(couponId)){
             log.warn("优惠券{}已派完，用户{}-{}无法领取，数据回滚",couponId,memberId,nickName);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();

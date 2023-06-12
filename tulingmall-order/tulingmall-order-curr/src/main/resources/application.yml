@@ -12,11 +12,11 @@ mybatis:
     map-underscore-to-camel-case: true
 
 #支付-当面付qrcode存储与访问路径设置
-trade:
-  zhifu:
-    qrcode:
-      storePath: D:/alipay/qr-code
-      paySuccessCallBack: http://roykingw.free.idcfengye.com/order/paySuccess
+#trade:
+#  zhifu:
+#    qrcode:
+#      storePath: D:/alipay/qr-code
+#      paySuccessCallBack: http://roykingw.free.idcfengye.com/order/paySuccess
 #分库分表配置
 #spring:
 #  shardingsphere:
@@ -32,17 +32,37 @@ trade:
 #        validationQuery: SELECT 1 FROM DUAL
 #        username: tlmall
 #        password: tlmall123
+#      ds-slave:
+#        type: com.alibaba.druid.pool.DruidDataSource
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+#        url: jdbc:mysql://192.168.65.137:3306/tl_mall_order?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+#        initialSize: 5
+#        minIdle: 10
+#        maxActive: 30
+#        validationQuery: SELECT 1 FROM DUAL
+#        username: tlmall
+#        password: tlmall123
 #    rules:
+#      readwrite-splitting:
+#        data-sources:
+#          ds_ms:
+#            static-strategy:
+#              write-data-source-name: ds-master
+#              read-data-source-names[0]: ds-slave
+#            load-balancer-name: ds_ms_lb
+#        load-balancers:
+#          ds_ms_lb:
+#            type: ROUND_ROBIN
 #      sharding:
 #        tables:
 #          oms_order:
-#            actual-data-nodes: ds-master.oms_order_$->{0..31}
+#            actual-data-nodes: ds_ms.oms_order_$->{0..31}
 #            table-strategy:
 #              complex:
 #                sharding-columns: id,member_id
 #                sharding-algorithm-name: oms_order_table_alg
 #          oms_order_item:
-#            actual-data-nodes: ds-master.oms_order_item_$->{0..31}
+#            actual-data-nodes: ds_ms.oms_order_item_$->{0..31}
 #            table-strategy:
 #              complex:
 #                sharding-columns: order_id

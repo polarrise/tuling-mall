@@ -32,6 +32,7 @@ public class ResourceConfig implements WebMvcConfigurer {
 
 //        String os = System.getProperty("os.name");
 //        if(os.toLowerCase().startsWith("win")){ //windows系统
+            System.out.println("======init qrcode resource link "+tradePayProp.getHttpBasePath()+" to "+tradePayProp.getStorePath());
             /** QrCode图片存储路径 */
             registry.addResourceHandler(tradePayProp.getHttpBasePath()
                     +"/**")
