@@ -1,4 +1,4 @@
-package com.tuling.tulingmall.util;
+package com.tuling.tulingmall.transactionTest;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -19,22 +19,22 @@ public class JdbcTransactionExample {
         Statement stmt = null;
 
         try {
-            // 加载数据库驱动
+            // 1.加载数据库驱动
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            // 建立数据库连接, ()里面的就是数据源对象
+            // 2.建立数据库连接, ()里面的就是数据源对象,通过数据源获取数据库连接
             conn = DriverManager.getConnection(url, user, password);
 
-            // 设置手动提交事务
+            // 3.数据库连接设置手动提交事务
             conn.setAutoCommit(false);
 
-            // 创建Statement对象执行SQL语句
+            // 4.数据库连接创建Statement对象执行SQL语句
             stmt = conn.createStatement();
 
-            // 执行SQL语句
+            // 5.Statement对象执行SQL语句
             stmt.executeUpdate("INSERT INTO `tl_mall_user`.`employees`(`id`, `name`, `age`, `position`, `hire_time`, `gmt_create`, `gmt_modified`) VALUES (3, '2', 10, '33', '2024-08-18 17:56:24', '2024-08-18 17:56:24.187810', NULL);");
 
-            // 提交事务
+            // 6.数据库连接提交事务
             conn.commit();
 
             System.out.println("事务已提交");
