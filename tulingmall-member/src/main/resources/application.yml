@@ -32,7 +32,7 @@ spring:
   session:
     store-type: redis
   redis:
-    host: 192.168.65.190
+    host: 127.0.0.1
     port: 6379
     database: 0
     lettuce:

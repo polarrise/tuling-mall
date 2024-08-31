@@ -251,31 +251,4 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <repositories>
-        <repository>
-            <id>maven-public</id>
-            <url>http://192.168.65.203:8081/repository/maven-public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
-    <distributionManagement>
-        <repository>
-            <id>maven-public</id>
-            <name>release</name>
-            <url>http://192.168.65.203:8081/repository/maven-releases/</url>
-        </repository>
-
-        <snapshotRepository>
-            <id>maven-public-snapshot</id>
-            <name>snapshot</name>
-            <url>http://192.168.65.203:8081/repository/maven-snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
 </project>
