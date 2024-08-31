@@ -179,8 +179,11 @@ public class UmsMemberServiceImpl implements UmsMemberService {
 
         try{
 
-            //远程调用认证服务器 进行用户登陆
-
+            /**
+             * 远程调用认证服务器 进行用户登陆:
+             * 当客户端（例如 Web 应用、移动应用或第三方服务）向 /oauth/token 端点发起请求时，需要提供相应的客户端凭据（client credentials）和身份验证信息，
+             * 通常是用户名和密码或者授权码（authorization code）等。授权服务器会验证这些信息，并根据授权方式（授权码授权、密码授权、客户端凭据授权等）生成访问令牌，并返回给客户端。
+             */
             response = restTemplate.exchange(MDA.OAUTH_LOGIN_URL, HttpMethod.POST, wrapOauthTokenRequest(username,password), TokenInfo.class);
 
             TokenInfo tokenInfo = response.getBody();
