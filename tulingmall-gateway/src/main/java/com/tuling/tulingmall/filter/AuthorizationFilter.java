@@ -75,10 +75,18 @@ public class AuthorizationFilter implements GlobalFilter,Ordered,InitializingBea
             throw new GateWayException(ResultCode.AUTHORIZATION_HEADER_IS_EMPTY);
         }
 
-        //第三步 校验我们的jwt 若jwt不对或者超时都会抛出异常
+        /**
+         *
+         * 第三步 校验我们的jwt 若jwt不对或者超时都会抛出异常
+         * 拿到token后,通过公钥(需要从授权服务获取公钥)校验
+         */
+
         Claims claims = JwtUtils.validateJwtToken(authHeader,publicKey);
 
-        //第四步 把从jwt中解析出来的 用户登陆信息存储到请求头中
+        /**
+         * 第四步 把从jwt中解析出来的 用户登陆信息存储到请求头中
+         * 校验通过后,从token中获取的用户登录信息存储到请求头中
+         */
         ServerWebExchange webExchange = wrapHeader(exchange,claims);
 
         return chain.filter(webExchange);

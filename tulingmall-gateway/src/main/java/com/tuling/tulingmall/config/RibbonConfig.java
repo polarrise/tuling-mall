@@ -2,6 +2,7 @@ package com.tuling.tulingmall.config;
 
 import com.tuling.tulingmall.Component.TulingRestTemplate;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +28,8 @@ public class RibbonConfig {
      * @date:2020/1/22 14:28
      */
 //    @Bean
+//    @LoadBalanced    注解这种方式是在所有的bean初始化完成之后再加的loadBalancerInterceptor,
+//    我们这里用到的restTemplate是在AuthorizationFilter初始化方法中需要拦截的,所以不能用注解的方式，得用下面手动添加loadBalancerInterceptor的方式
 //    public TulingRestTemplate restTemplate(DiscoveryClient discoveryClient) {
 //        return new TulingRestTemplate(discoveryClient);
 //    }
