@@ -29,6 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     /**
+     * 请求带了用户名密码->怎么知道是正确的呢？ 借助Spring Security安全框架去实现,实现WebSecurityConfigurerAdapter适配器，指定userDetailsService去校验
      * 方法实现说明:用于构建用户认证组件,需要传递userDetailsService和密码加密器
      * @author:smlz
      * @param auth
@@ -64,6 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    // 生成client_id 对应的 client_secret
     public static void main(String[] args) {
         System.out.println(new BCryptPasswordEncoder().encode("test"));
     }

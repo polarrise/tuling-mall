@@ -70,6 +70,7 @@ public class JwtUtils {
 
             ResponseEntity<Map> response = restTemplate.exchange(AUTH_TOKEN_KEY_URL, HttpMethod.GET, entity, Map.class);
 
+            // 就是认证中心那边JwtAccessTokenConverter设置的RSA钥匙对：公钥，然后通过Base64.encode加密了
             String tokenKey = response.getBody().get("value").toString();
 
             log.info("去认证服务器获取Token_Key:{}",tokenKey);
@@ -126,6 +127,7 @@ public class JwtUtils {
         try{
             token = StringUtils.substringAfter(authHeader, AUTH_HEADER);
 
+            // 设置签名key:为从认证中心获取的公钥, 然后通过JWT的api校验token是否有效
             Jwt<JwsHeader, Claims> parseClaimsJwt = Jwts.parser().setSigningKey(publicKey).parseClaimsJws(token);
 
             Claims claims = parseClaimsJwt.getBody();
