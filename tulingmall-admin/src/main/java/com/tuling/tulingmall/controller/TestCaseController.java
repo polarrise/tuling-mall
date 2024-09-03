@@ -1,0 +1,27 @@
+package com.tuling.tulingmall.controller;
+
+
+import com.tuling.tulingmall.annotation.ApiAnnotation;
+import com.tuling.tulingmall.common.api.CommonResult;
+import com.tuling.tulingmall.qo.OuterProviderQO;
+import com.tuling.tulingmall.service.TestCaseService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@Api(tags = "TestCaseController", description = "测试用例Controller")
+@RequestMapping("/testCase")
+public class TestCaseController {
+
+    @Autowired
+    private TestCaseService testCaseService;
+
+    @ApiAnnotation
+    @ApiOperation("测试api权限")
+    @RequestMapping(value = "/testApiAuth", method = RequestMethod.POST)
+    public CommonResult<String> testApiAuth(@RequestBody OuterProviderQO outerProviderQO) {
+        return CommonResult.success("测试成功");
+    }
+}
