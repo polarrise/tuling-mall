@@ -3,8 +3,10 @@ package com.tuling.tulingmall.controller;
 
 import com.tuling.tulingmall.annotation.ApiAnnotation;
 import com.tuling.tulingmall.common.api.CommonResult;
+import com.tuling.tulingmall.qo.MailInfoQO;
 import com.tuling.tulingmall.qo.OuterProviderQO;
 import com.tuling.tulingmall.service.TestCaseService;
+import com.tuling.tulingmall.vo.MailInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +25,11 @@ public class TestCaseController {
     @RequestMapping(value = "/testApiAuth", method = RequestMethod.POST)
     public CommonResult<String> testApiAuth(@RequestBody OuterProviderQO outerProviderQO) {
         return CommonResult.success("测试成功");
+    }
+
+    @ApiOperation("测试获取邮件信息")
+    @RequestMapping(value = "/getMailInfo", method = RequestMethod.POST)
+    public CommonResult<MailInfoVO> getMailInfo(@RequestBody MailInfoQO mailInfoQO) {
+        return CommonResult.success(testCaseService.getMailInfo(mailInfoQO));
     }
 }
