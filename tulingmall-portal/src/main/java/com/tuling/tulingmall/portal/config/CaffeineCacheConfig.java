@@ -4,6 +4,7 @@ import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.tuling.tulingmall.portal.domain.HomeContentResult;
 import com.tuling.tulingmall.promotion.domain.FlashPromotionProduct;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 @Configuration
 public class CaffeineCacheConfig {
 
@@ -24,6 +26,9 @@ public class CaffeineCacheConfig {
                 .initialCapacity(20)
                 // 缓存的最大条数
                 .maximumSize(100)
+                .removalListener(((key,value,cause)->{
+                    log.info("缓存失效通知,key：{},原因：{}",key,cause);
+                }))
                 .build();
     }
 

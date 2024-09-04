@@ -72,11 +72,22 @@ public class HomeServiceImpl implements HomeService {
         return content;
     }
 
+    /**
+     * 从本地缓存取，取不到则从远程(Redis或者对应微服务)获取推荐内容,并存入缓存
+     * @return
+     */
+    private HomeContentResult getHomeContentResult(){
+        final String brandKey = promotionRedisKey.getBrandKey();
+        return promotionCache.get(brandKey,key->getFromRemote());
+    }
+
     /*处理首页推荐品牌和商品内容*/
     public HomeContentResult recommendContent(){
         /*品牌和产品在本地缓存中统一处理，有则视为同有，无则视为同无*/
         final String brandKey = promotionRedisKey.getBrandKey();
         final boolean allowLocalCache = promotionRedisKey.isAllowLocalCache();
+
+
         /*先从本地缓存中获取推荐内容*/
         HomeContentResult result = allowLocalCache ?
                 promotionCache.getIfPresent(brandKey) : null;
