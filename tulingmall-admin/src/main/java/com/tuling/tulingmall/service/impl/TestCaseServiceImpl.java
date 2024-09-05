@@ -1,5 +1,6 @@
 package com.tuling.tulingmall.service.impl;
 
+import cn.hutool.json.JSONUtil;
 import com.tuling.tulingmall.annotation.MailTemplate;
 import com.tuling.tulingmall.common.api.ResultCode;
 import com.tuling.tulingmall.common.exception.TulingMallException;
@@ -12,6 +13,7 @@ import com.tuling.tulingmall.service.TestCaseService;
 import com.tuling.tulingmall.vo.MailInfoVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -20,6 +22,8 @@ import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
 
 @Slf4j
 @Service
@@ -32,6 +36,10 @@ public class TestCaseServiceImpl implements TestCaseService {
 
     @Resource
     private BatchInsertUtils batchInsertUtils;
+
+    @Autowired
+    @Qualifier("commonPool")
+    private ExecutorService tulingThreadPoolExecutor;
 
 
     @EventListener
@@ -75,5 +83,40 @@ public class TestCaseServiceImpl implements TestCaseService {
         }
         int i = batchInsertUtils.batchInsertOrUpdateData(list, UmsAdminMapper.class, (a, b) -> b.insert(a));
         log.info("成功写入：{}条数据",i);
+    }
+
+    @Override
+    public void parallelSubList() {
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < 1000; i++) {
+            list.add(i);
+        }
+        int totalCount = list.size();
+        int pageSize = 50;
+        int threadCount = totalCount % pageSize == 0 ?  totalCount / pageSize : totalCount / pageSize + 1;
+        log.info("线程拆分数量:{}",threadCount);
+        CountDownLatch countDownLatch = new CountDownLatch(threadCount);
+
+        for (int index = 0; index < threadCount; index++){
+            List<Integer> subList = list.subList(index * pageSize, index == threadCount - 1 ? totalCount : (index + 1) * pageSize);
+            tulingThreadPoolExecutor.submit(()->{
+                try {
+                    log.info("当前执行线程名称:{},subList集合：{}",Thread.currentThread().getName(), JSONUtil.toJsonStr(subList));
+                }catch (Exception e){
+                    log.info("当前任务执行失败：{}",e.getMessage());
+                }finally {
+                    countDownLatch.countDown();
+                }
+            });
+        }
+
+        try {
+            countDownLatch.await();
+        }catch (InterruptedException e){
+            log.info("任务出错了,中断异常："+e.getMessage());
+            e.printStackTrace();
+        }
+
+
     }
 }

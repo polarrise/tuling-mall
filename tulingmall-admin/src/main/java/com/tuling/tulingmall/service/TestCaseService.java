@@ -17,4 +17,9 @@ public interface TestCaseService {
      * 利用Mybatis的SqlSession设置批处理,把需要执行的sql添加到批处理队列中，统一提交事务
      */
     void testBatchInsert();
+
+    /**
+     *List集合拆分，异步并行处理多个子集合
+     */
+    void parallelSubList();
 }

@@ -39,4 +39,11 @@ public class TestCaseController {
         testCaseService.testBatchInsert();
         return CommonResult.success("成功");
     }
+
+    @ApiOperation("集合拆分-多线程并行处理")
+    @RequestMapping(value = "/parallelSubList", method = RequestMethod.POST)
+    public CommonResult<String> parallelSubList() {
+        testCaseService.parallelSubList();
+        return CommonResult.success("成功");
+    }
 }
