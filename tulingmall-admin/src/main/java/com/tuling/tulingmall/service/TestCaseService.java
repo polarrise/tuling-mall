@@ -11,4 +11,10 @@ public interface TestCaseService {
      * @return
      */
     MailInfoVO getMailInfo(MailInfoQO mailInfoQO);
+
+
+    /**
+     * 利用Mybatis的SqlSession设置批处理,把需要执行的sql添加到批处理队列中，统一提交事务
+     */
+    void testBatchInsert();
 }

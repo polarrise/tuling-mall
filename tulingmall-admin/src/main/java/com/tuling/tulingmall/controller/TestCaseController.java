@@ -32,4 +32,11 @@ public class TestCaseController {
     public CommonResult<MailInfoVO> getMailInfo(@RequestBody MailInfoQO mailInfoQO) {
         return CommonResult.success(testCaseService.getMailInfo(mailInfoQO));
     }
+
+    @ApiOperation("测试批处理")
+    @RequestMapping(value = "/testBatchInsert", method = RequestMethod.POST)
+    public CommonResult<String> testBatchInsert() {
+        testCaseService.testBatchInsert();
+        return CommonResult.success("成功");
+    }
 }
