@@ -133,6 +133,12 @@
 <!--            <artifactId>hutool-all</artifactId>-->
 <!--            <version>5.8.21</version>-->
 <!--        </dependency>-->
+
+        <dependency>
+            <groupId>com.hankcs</groupId>
+            <artifactId>hanlp</artifactId>
+            <version>portable-1.8.3</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
