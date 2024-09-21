@@ -8,6 +8,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -91,11 +92,32 @@ public class TulingAuthServerConfig extends AuthorizationServerConfigurerAdapter
 
 
     /**
-     * 方法实现说明:认证服务器能够给哪些 客户端颁发token  我们需要把客户端的配置 存储到数据库中 可以基于内存存储和db存储
+     * 方法实现说明:
+     * 客户端具体信息服务配置: 就是配置这些客户端信息存到哪，内存里面还是数据库oauth_client_details表里面,认证服务器才能找到这些客户端并且颁发token
+     * 这里是基于jdbc，注入JdbcClientDetailsService，也就是我们的客户端信息需要存入oauth_client_details表里面才能验证通过。
      */
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.withClientDetails(clientDetails());
+
+        /**
+         *基于内存方式存储客户端信息
+        clients.inMemory()
+                //配置client_id
+                .withClient("client")
+                //配置client-secret
+                .secret(passwordEncoder.encode("123123"))
+                //配置访问token的有效期
+                .accessTokenValiditySeconds(3600)
+                //配置刷新token的有效期
+                .refreshTokenValiditySeconds(864000)
+                //配置redirect_uri，用于授权成功后跳转
+                .redirectUris("http://www.baidu.com")
+                //配置申请的权限范围
+                .scopes("all")
+                // 配置grant_type，表示授权类型：authorization_code: 授权码模式, implicit: 简化模式 , password： 密码模式, client_credentials: 客户端模式, refresh_token: 更新令牌
+                .authorizedGrantTypes("authorization_code","implicit","password","client_credentials","refresh_token");
+        */
     }
 
     /**
@@ -107,11 +129,11 @@ public class TulingAuthServerConfig extends AuthorizationServerConfigurerAdapter
     }
 
     /**
-     * 方法实现说明:授权服务器的配置的配置
-     * @author:smlz
-     * @return:
-     * @exception:
-     * @date:2020/1/15 20:21
+     * 方法实现说明:授权服务器端点的配置:
+     * token怎么存储，OAuth2帮我们实现了 内存存储、jdbc、jwt、jwk、redis 存储。我们需要指定使用
+     * token需要带什么信息(增强)、
+     * 配置自己的UserDetailsService实现spring-security的UserDetailsService 用于进行用户信息检查
+     * 密码模式下需要传入认证管理器，注入认证管理器，使用spring-security里面WebSecurityConfigurerAdapter里的authenticationManagerBean()构造的AuthenticationManagerDelegator认证管理器即可
      */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
@@ -119,11 +141,24 @@ public class TulingAuthServerConfig extends AuthorizationServerConfigurerAdapter
         TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
         tokenEnhancerChain.setTokenEnhancers(Arrays.asList(tulingTokenEnhancer(),jwtAccessTokenConverter()));
 
-        endpoints.tokenStore(tokenStore()) //授权服务器颁发的token 怎么存储的
+        endpoints.
+                 // token存储策略：使用jwt存储
+                 tokenStore(tokenStore())
+
+                 //授权服务器颁发的token，token增强设置载荷，配置jwt的密钥
                  .tokenEnhancer(tokenEnhancerChain)
-                 .userDetailsService(tulingUserDetailService) //用户来获取token的时候需要 进行账号密码
-                  // 基于密码模式
-                 .authenticationManager(authenticationManager);
+
+                 //用户来获取token的时候需要 进行用户信息检查
+                 .userDetailsService(tulingUserDetailService)
+
+                 // 使用密码模式需要传入认证管理器，  如果只需授权码模式认证，则不需要注入认证管理器，因为授权码模式用不到用户名密码，密码模式会用到
+                 .authenticationManager(authenticationManager)
+
+                 // 刷新token是否可重复使用
+                .reuseRefreshTokens(true)
+
+                // 允许获取token的终端支持post和get请求，默认是post的。
+                .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST);
     }
 
 
