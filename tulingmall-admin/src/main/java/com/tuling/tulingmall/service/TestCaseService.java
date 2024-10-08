@@ -22,4 +22,14 @@ public interface TestCaseService {
      *List集合拆分，异步并行处理多个子集合
      */
     void parallelSubList();
+
+    /**
+     * 同步回调
+     */
+    void toPay1();
+
+    /**
+     * 异步回调
+     */
+    void toPay2();
 }

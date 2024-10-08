@@ -46,4 +46,18 @@ public class TestCaseController {
         testCaseService.parallelSubList();
         return CommonResult.success("成功");
     }
+
+    @ApiOperation("理解回调思想-同步回调")
+    @RequestMapping(value = "/toPay1", method = RequestMethod.POST)
+    public CommonResult<String> syncCallBack() {
+        testCaseService.toPay1();
+        return CommonResult.success("成功");
+    }
+
+    @ApiOperation("理解回调思想-异步回调")
+    @RequestMapping(value = "/toPay2", method = RequestMethod.POST)
+    public CommonResult<String> toPay2() {
+        testCaseService.toPay2();
+        return CommonResult.success("成功");
+    }
 }
