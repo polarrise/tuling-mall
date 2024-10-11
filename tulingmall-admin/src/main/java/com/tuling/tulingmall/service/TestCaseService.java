@@ -32,4 +32,9 @@ public interface TestCaseService {
      * 异步回调
      */
     void toPay2();
+
+    /**
+     * 测试TransmittableThreadLocal线程不安全的问题
+     */
+    void testTransmittableThreadLocal();
 }

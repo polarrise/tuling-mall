@@ -142,7 +142,8 @@ public class TulingAuthServerConfig extends AuthorizationServerConfigurerAdapter
         tokenEnhancerChain.setTokenEnhancers(Arrays.asList(tulingTokenEnhancer(),jwtAccessTokenConverter()));
 
         endpoints.
-                 // token存储策略：使用jwt存储
+                 // token存储策略：使用jwt存储.
+                 // 之前搞不明白为什么要存储这些access_token?  答：OAuth2需要存储token_store是为了有效地管理访问令牌和刷新令牌的生命周期，确保用户认证和授权的安全实施。选择合适的TokenStore实现方式对于系统的性能、安全性和可扩展性至关重要‌
                  tokenStore(tokenStore())
 
                  //授权服务器颁发的token，token增强设置载荷，配置jwt的密钥

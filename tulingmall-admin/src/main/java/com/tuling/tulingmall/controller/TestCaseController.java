@@ -2,6 +2,7 @@ package com.tuling.tulingmall.controller;
 
 
 import com.tuling.tulingmall.annotation.ApiAnnotation;
+import com.tuling.tulingmall.annotation.DigitalAngel;
 import com.tuling.tulingmall.common.api.CommonResult;
 import com.tuling.tulingmall.qo.MailInfoQO;
 import com.tuling.tulingmall.qo.OuterProviderQO;
@@ -58,6 +59,14 @@ public class TestCaseController {
     @RequestMapping(value = "/toPay2", method = RequestMethod.POST)
     public CommonResult<String> toPay2() {
         testCaseService.toPay2();
+        return CommonResult.success("成功");
+    }
+
+    @ApiOperation("测试-TransmittableThreadLocal")
+    @DigitalAngel(memo = "标注该接口需要校验是否存在DIGITAL_ANGEL角色")
+    @RequestMapping(value = "/testTransmittableThreadLocal", method = RequestMethod.POST)
+    public CommonResult<String> testTransmittableThreadLocal() {
+        testCaseService.testTransmittableThreadLocal();
         return CommonResult.success("成功");
     }
 }

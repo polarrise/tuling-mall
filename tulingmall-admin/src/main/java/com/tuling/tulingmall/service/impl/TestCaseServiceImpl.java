@@ -1,7 +1,9 @@
 package com.tuling.tulingmall.service.impl;
 
 import cn.hutool.json.JSONUtil;
+import com.alibaba.ttl.threadpool.TtlExecutors;
 import com.tuling.tulingmall.annotation.MailTemplate;
+import com.tuling.tulingmall.aspect.RoleContext;
 import com.tuling.tulingmall.common.api.ResultCode;
 import com.tuling.tulingmall.common.exception.TulingMallException;
 import com.tuling.tulingmall.component.BatchInsertUtils;
@@ -23,10 +25,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.*;
 
 @Slf4j
 @Service
@@ -186,11 +185,31 @@ public class TestCaseServiceImpl implements TestCaseService {
             return "异步任务完成";
         }).thenAccept(result -> System.out.println("回调收到结果: " + result)); // 回调处理结果
 
-        System.out.println("主线程继续运行");
+       log.info("主线程继续运行");
 
         // 等待异步任务完成
         future.join(); // 使用 join() 阻塞主线程，直到异步任务完成
     }
 
+    @Override
+    public void testTransmittableThreadLocal() {
+        // 主线程获取角色信息
+        Boolean hasRole = RoleContext.getHasRole();
+        log.info("主线程: 获取角色信息，是否拥有 'DIGITAL_ANGEL' 角色: " + hasRole);
 
+        // 提交多个任务到自定义线程池
+        for (int i = 0; i < 10; i++) {
+            CompletableFuture.runAsync(() -> {
+                try {
+                    // 增加任务的执行时间，模拟长时间运行的任务
+                    TimeUnit.MILLISECONDS.sleep((long) (Math.random() * 1000));
+                    // 在子线程中获取角色信息
+                    Boolean childThreadHasRole = RoleContext.getHasRole();
+                    log.info("子线程: 获取角色信息，是否拥有 'DIGITAL_ANGEL' 角色: " + childThreadHasRole);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }, TtlExecutors.getTtlExecutorService(tulingThreadPoolExecutor));
+        }
+    }
 }
