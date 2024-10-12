@@ -14,11 +14,8 @@ import java.util.concurrent.*;
  * @date 2024/10/12 22：43
  * 如果只是添加少量数据，HashMap 的线程安全问题可能不容易复现，因为并发冲突的概率较低。
  * 为了更容易复现问题，增加并发写入的数量和操作速度可以更清晰地看到 HashMap 在并发场景下的异常行为。
- *
-增加并发操作：每个任务不再只添加一条数据，而是每个 CompletableFuture 向 HashMap 添加 1000 条数据，总共 5000 条数据。这样更容易触发并发冲突。
-
-并发写入 HashMap：每个任务在同一时间对共享的 HashMap 进行大量写操作，更容易复现线程安全问题。
-
+ * 增加并发操作：每个任务不再只添加一条数据，而是每个 CompletableFuture 向 HashMap 添加 1000 条数据，总共 5000 条数据。这样更容易触发并发冲突。
+ * 并发写入 HashMap：每个任务在同一时间对共享的 HashMap 进行大量写操作，更容易复现线程安全问题。
  */
 public class TestCompletableFuture {
 
